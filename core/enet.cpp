@@ -10,7 +10,21 @@ void ENet:ENet(){
 
 void ENet::~ENet(){
 	bufferevent_free(this->base_);
+}
 
+void ENet::init(void* app){
+	app_ = (App*)app;
+
+	int port = Conf:single().getInt("port");
+	this->listen(port);
+}
+
+void ENet::dispatch(void* ud){
+	ENet* ent = (ENet*)(ud);
+	while(true){
+		if(!ent->app->isRuning()) break;
+		event_base_dispatch(ent->mevbase);
+	}
 }
 
 void ENet::listen(int port){
@@ -27,7 +41,8 @@ void ENet::listen(int port){
 		LISTEN_BACKLOG,
 		(struct sockaddr *)&addr,
 		sizeof(addr));
-	this.listeners_:push_back(listener);
+	assert(listener)
+	//this.listeners_:push_back(listener);
 }
 
 static void onAccept(struct evconnlistener *listener, evutil_socket_t fd, struct sockaddr *sa, int d, void *ud)
@@ -35,7 +50,7 @@ static void onAccept(struct evconnlistener *listener, evutil_socket_t fd, struct
 	//void* net = (Net*)(ud); 
 	struct event_base *base = evconnlistener_get_base(listener);
 	struct bufferevent *bev = bufferevent_socket_new(base,fd,BEV_OPT_CLOSE_ON_FREE);
-	bufferevent_setcb(bev, onRead, NULL, sockEvent, ud);
+	bufferevent_setcb(bev, onRead, onWrite, NULL, ud);
 	bufferevent_enable(bev, EV_READ | EV_WRITE);
 }
 
@@ -43,4 +58,8 @@ static void onAccept(struct evconnlistener *listener, evutil_socket_t fd, struct
 static void onRead(struct bufferevent* bev, void *ud)
 {
 	
+}
+
+static void onWrite(struct bufferevent* bev, void* ud){
+
 }

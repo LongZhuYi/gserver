@@ -1,17 +1,23 @@
-#ifndef HALL_H 
-#define HALL_H 
+
+#ifndef HALL_H
+#define HALL_H
 
 #include "app.h"
-#include "message.h"
-#include <boost/lockfree/queue.hpp>
-
-#define MAX_SIZE 1024*8
+#include "msg.h"
+#include "script.h"
+#include "msg.h"
+#include "net.h"
 
 class Hall : public App{
 public:
 	virtual ~Hall();
 private:
-	boost::lockfree::queue<message> mq_(MAX_SIZE);
+	uint   sid_;
+	MQ     mq_;
+	ENet   en_;
+	Script sc_;
+	bool running;
+	pthread_t pids_[2];
 };
 
-#define 
+#endif

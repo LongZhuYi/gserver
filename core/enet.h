@@ -9,11 +9,14 @@
 
 class ENet : public Net {
 public:
-	ENet();
+	ENet(App*);
 	~ENet();
-	static void readBuff();
-	static void accept_callbk(struct evconnlistener*, evutil_socket_t, struct sockaddr, int d, void*);
+	static vpod dispatch();
+	static void handlerRead();
+	static void acceptCallbk(struct evconnlistener*, evutil_socket_t, struct sockaddr, int d, void*);
 private:
+	App*   app_;
 	struct event_base* base_;
-	std::vecotr<struct evconnlistener*> listeners_;
+	//std::vecotr<struct evconnlistener*> listeners_;
+	
 };

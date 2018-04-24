@@ -3,9 +3,12 @@
 
 class App{
 	virtual ~App();
-	void* init(void*);
-	void* start(void*);
-	void* doMsg(void*);
+	void init();
+	void start();
+	void stop();
+	void doMsg(void*);
+	bool isStop();
+	static void * handlerMsg(void *ud);
 };
 
 #endif
