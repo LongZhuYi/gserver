@@ -5,9 +5,11 @@
 #include "lauxlib.h"
 
 class Luas: public Script {
+public:
+	void loadConfig();
 private:
 	lua_State* state_;
-	
+
 };
 
 #endif

@@ -11,3 +11,7 @@ void Luas::registry(void* fs){
 void Luas::call(void* fname, ...){
 	
 }
+
+void Luas::loadConfig(){
+	
+}
