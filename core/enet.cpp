@@ -4,6 +4,8 @@
 #include <string.h>
 #include <arpa/inet.h>
 
+#define MAX_BUFF 1024
+
 void ENet:ENet(){
 	this->base_ = event_base_new();
 }
@@ -36,7 +38,7 @@ void ENet::listen(int port){
 
 	struct evconnlistener *listener = evconnlistener_new_bind(this->base_,
 		onAccept,
-		this,
+		&this->mq_,
 		LEV_OPT_CLOSE_ON_FREE | LEV_OPT_REUSEABLE,
 		LISTEN_BACKLOG,
 		(struct sockaddr *)&addr,
@@ -57,7 +59,15 @@ static void onAccept(struct evconnlistener *listener, evutil_socket_t fd, struct
 
 static void onRead(struct bufferevent* bev, void *ud)
 {
-	
+	char buff[MAX_BUFF];
+	int sz = bufferevent_read(bev, buff, MAX_BUFF);
+	Msg* msg = (Msg*) Mem:Alloc(sizeof(Msg));
+	msg->ms  = (char*) Mem::Alloc(sz);
+	memcpy(msg->ms, buff, sz);
+	msg->sz = sz;
+
+	MQ* mq = (MQ*)ud;
+	mq->push(msg);
 }
 
 static void onWrite(struct bufferevent* bev, void* ud){

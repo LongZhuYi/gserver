@@ -25,9 +25,9 @@ void Hall::init(){
 }
 void Hall::start(){
 	running = true;
-
-	pthread_create(&pids_[0], NULL, Hall::handlerMsg, (void*)this)
-	pthread_create(&pids_[1], NULL, ENet::dispatch, (void*)&this->en_)
+	pthread_t pids[2];
+	pthread_create(&pids[0], NULL, Hall::handlerMsg, (void*)this)
+	pthread_create(&pids[1], NULL, ENet::dispatch, (void*)&this->en_)
 }
 
 void Hall::stop(){

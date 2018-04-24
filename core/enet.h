@@ -18,5 +18,5 @@ private:
 	App*   app_;
 	struct event_base* base_;
 	//std::vecotr<struct evconnlistener*> listeners_;
-	
+	std::map<uint, void*> ss_;
 };

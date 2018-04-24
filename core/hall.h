@@ -17,7 +17,6 @@ private:
 	ENet   en_;
 	Script sc_;
 	bool running;
-	pthread_t pids_[2];
 };
 
 #endif
