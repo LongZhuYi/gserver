@@ -15,15 +15,10 @@ public:
 
     luaL_newmetatable(L, T::className);
     int metatable = lua_gettop(L);
-
-    // store method table in globals so that
-    // scripts can add functions written in Lua.
     lua_pushvalue(L, methods);
-    //set(L, LUA_GLOBALSINDEX, T::className);
-    lua_setglobal(L,T::className);
+    lua_setglobal(L,T::className); ///放在全局域方便LUA直接使用修改，其实也可以放在一个table中，相当于一个namespace
 
-    // hide metatable from Lua getmetatable()
-    lua_pushvalue(L, methods);
+    lua_pushvalue(L, methods);     ///重写metatable中的元方法
     set(L, metatable, "__metatable");
 
     lua_pushvalue(L, methods);
@@ -36,7 +31,7 @@ public:
     set(L, metatable, "__gc");
 
     lua_newtable(L);                // mt for method table
-    lua_pushcfunction(L, new_T);
+    lua_pushcfunction(L, new_T);    ///构造方法
     lua_pushvalue(L, -1);           // dup new_T function
     set(L, methods, "new");         // add new_T to method table
     set(L, -3, "__call");           // mt.__call = new_T
@@ -46,7 +41,7 @@ public:
     for (RegType *l = T::methods; l->name; l++) {
       lua_pushstring(L, l->name);
       lua_pushlightuserdata(L, (void*)l);
-      lua_pushcclosure(L, thunk, 1);
+      lua_pushcclosure(L, thunk, 1); ///push closure到栈顶,closure可以关联过个值，关联的值需要在调lua_pushcclosure前push。第二个参数是关联数量。关联的值在调C closure时在栈顶可以拿到。
       lua_settable(L, methods);
     }
 
@@ -54,8 +49,7 @@ public:
   }
 
   // call named lua method from userdata method table
-  static int call(lua_State *L, const char *method,
-                  int nargs=0, int nresults=LUA_MULTRET, int errfunc=0)
+  static int call(lua_State *L, const char *method, int nargs=0, int nresults=LUA_MULTRET, int errfunc=0)
   {
     int base = lua_gettop(L) - nargs;  // userdata index
     if (!luaL_checkudata(L, base, T::className)) {
@@ -92,8 +86,7 @@ public:
     if (lua_isnil(L, -1)) luaL_error(L, "%s missing metatable", T::className);
     int mt = lua_gettop(L);
     subtable(L, mt, "userdata", "v");
-    userdataType *ud =
-      static_cast<userdataType*>(pushuserdata(L, obj, sizeof(userdataType)));
+    userdataType *ud = static_cast<userdataType*>(pushuserdata(L, obj, sizeof(userdataType)));
     if (ud) {
       ud->pT = obj;  // store pointer to object in userdata
       lua_pushvalue(L, mt);
@@ -158,7 +151,7 @@ private:
     return 0;
   }
 
-  static int tostring_T (lua_State *L) {
+  static int tostring_T(lua_State *L) {
     char buff[32];
     userdataType *ud = static_cast<userdataType*>(lua_touserdata(L, 1));
     T *obj = ud->pT;
