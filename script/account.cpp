@@ -31,7 +31,6 @@ Lunar<Account>::RegType Account::methods[] = {
 int main(int argc, char *argv[])
 {
   lua_State *L = luaL_newstate();
-
   luaL_openlibs(L);
 
   Lunar<Account>::Register(L);

@@ -1,13 +1,14 @@
 #include "luas.h"
+#include "lar.h"
 
 void Luas::init(){
-	state_ = luaL_newstate();
-	luaL_loadfile(state_,"init.lua");
-	lua_pcall(state_,0,0,0);
+  state_ = luaL_newstate();
+  luaL_openlibs(L);
 }
 
 void Luas::registry(void* fs){
-	
+	//可以在这里通过luanr向LUA注册需要的类
+	Lunar<Lar>::Register(state_);
 }
 
 void Luas::call(void* fname, rid, ...){
