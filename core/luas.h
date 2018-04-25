@@ -2,8 +2,12 @@
 #define LUAS_H
 
 #include "script.h"
-#include "lauxlib.h"
-
+extern "C"
+{	
+	#include "lua.h"
+	#include "lauxlib.h"
+	#include "lualib.h"
+}
 class Luas: public Script {
 public:
 	void loadConfig();

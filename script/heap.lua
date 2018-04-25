@@ -58,3 +58,7 @@ end
 function heap:top()
 	return self.data[1]
 end
+
+function heap:parent(pos) return math.floor(pos/2) end
+function heap:left(pos) return pos*2 end
+function heap:right(pos) return 2*pos+1 end
