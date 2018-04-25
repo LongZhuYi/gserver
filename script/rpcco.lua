@@ -1,36 +1,70 @@
+require "queue"
+
 local coyield   = coroutine.yield
 local coresume  = coroutine.resume
 local cocreate  = coroutine.create
 local costatus  = coroutine.status
 local corunning = coroutine.running
 
-local coid  = coid or 0
+local MAX_RUNING = 1024
+local MAX_COID = 1024
+local COID     = 0
 local rpcco = rpcco or {}
 local cpool = cpool or {}
 local tpool = tpool or {}
 local rpool = rpool or {}
 
 function tick()
+	for cid, co in pairs(rpool) do 
 
+	end
 end
 
-function createCo()
-	local co = nil
-	if #cpool == 0 then 
-		co = cocreate()
-		coid = coid + 1
-		return co, coid
+function ret(task, ...)
+	--return result to other server
+end
+
+function createCo(func, ...)
+	COID = COID + 1
+	COID = COID % MAX_COID
+	local task = {
+		cid  = COID,
+		func = func,
+		parm = {...},
+	}
+	if #cpool > 0 then 
+		local co = cpool[#cpool]
+		table.remove(cpool, #cpool)
+		return co, task
+	elseif table.length(rpool) < MAX_RUNING then
+		local co = cocreate(function(...)
+			local func = task.func
+			ret(task, func(...))
+			rpool[task.cid] = nil
+			while true do 
+				if #tpool == 0 then 
+					coyield()
+				else
+					local tmpTask = tpool[#tpool]
+					tpool[#tpool] = nil
+					local func = tmpTask.func
+					ret(tmpTask, func(unpack(tmpTask.parm)))
+				end
+			end
+		end)
+		return co, task
+	else
+		return nil, task
 	end
-	co = cpool[#cpool]
-	cpool[#cpool] = nil
-	return co, coid
 end
 
 function excute(obj, func, ...)
-	local co, coid = createCo()
+	local co, task = createCo(func, ...)
 	if co then
-		rpool[coid] = co
-		coresume(co, func, obj, ...)
+		rpool[task.cid] = co
+		coresume(co)
+	else
+		table.insert(tpool, task)
 	end
 end
 
