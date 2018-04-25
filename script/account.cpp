@@ -1,7 +1,7 @@
 extern "C" {
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
+  #include "lua.h"
+  #include "lauxlib.h"
+  #include "lualib.h"
 }
 
 #include "lunar.h"
@@ -30,7 +30,7 @@ Lunar<Account>::RegType Account::methods[] = {
 
 int main(int argc, char *argv[])
 {
-  lua_State *L = lua_open();
+  lua_State *L = luaL_newstate();
 
   luaL_openlibs(L);
 

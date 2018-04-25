@@ -1,6 +1,6 @@
 extern "C" {
-#include "lua.h"
-#include "lauxlib.h"
+  #include "lua.h"
+  #include "lauxlib.h"
 }
 
 template <typename T> class Lunar {
@@ -19,7 +19,8 @@ public:
     // store method table in globals so that
     // scripts can add functions written in Lua.
     lua_pushvalue(L, methods);
-    set(L, LUA_GLOBALSINDEX, T::className);
+    //set(L, LUA_GLOBALSINDEX, T::className);
+    lua_setglobal(L,T::className);
 
     // hide metatable from Lua getmetatable()
     lua_pushvalue(L, methods);
@@ -116,7 +117,7 @@ public:
     userdataType *ud =
       static_cast<userdataType*>(luaL_checkudata(L, narg, T::className));
     if(!ud) {
-        luaL_typerror(L, narg, T::className);
+        //luaL_typerror(L, narg, T::className);
         return NULL;
     }
     return ud->pT;  // pointer to T object
@@ -212,6 +213,3 @@ private:
 };
 
 #define LUNAR_DECLARE_METHOD(Class, Name) {#Name, &Class::Name}
-
-//g++ -o test  account.cc -L/usr/local/lib -llua -llualib
-// more info see http://lua-users.org/wiki/CppBindingWithLunar
