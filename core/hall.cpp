@@ -28,6 +28,9 @@ void Hall::start(){
 	pthread_t pids[2];
 	pthread_create(&pids[0], NULL, Hall::handlerMsg, (void*)this)
 	pthread_create(&pids[1], NULL, ENet::dispatch, (void*)&this->en_)
+
+	pthread_join(pids[0], NULL);
+	pthread_join(pids[1], NULL);
 }
 
 void Hall::stop(){
