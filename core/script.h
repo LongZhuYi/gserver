@@ -3,9 +3,9 @@
 
 class Script{
 public:
-	virtual void init(void*);
-	virtual void registry(void*);
-	virtual void call(void*, ...);
+	virtual void init(void*){};
+	void registry(void*);
+	void call(void*, ...);
 };
 
 #endif

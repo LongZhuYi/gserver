@@ -3,12 +3,11 @@
 
 class App{
 public:
-	virtual ~App();
 	void init();
 	void start();
 	void stop();
 	void doMsg(void*);
-	bool isRuning();
+	virtual bool isRuning(){};
 	static void * handlerMsg(void *ud);
 };
 

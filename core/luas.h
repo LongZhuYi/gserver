@@ -12,8 +12,8 @@ extern "C"
 }
 class Luas: public Script {
 public:
+	void init(void*);
 	void registry(void*);
-	void init();
 	void loadConfig();
 	void call(void* fname, int rid, ...);
 private:

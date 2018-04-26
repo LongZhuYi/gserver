@@ -10,18 +10,19 @@
 
 class Hall : public App{
 public:
+	Hall();
+	~Hall();
 	void init();
 	void start();
 	void stop();
 	void doMsg(void*);
 	static void* handlerMsg(void*);
-	virtual ~Hall();
-	bool isRuning();
+	virtual bool isRuning();
 private:
 	int    sid_;
 	MQ     mq_;
 	Net*   en_;
-	Script sc_;
+	Script* sc_;
 	bool running;
 };
 

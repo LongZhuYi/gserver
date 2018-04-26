@@ -13,7 +13,7 @@ class ENet : public Net {
 public:
 	ENet();
 	~ENet();
-	void init(void*);
+	virtual void init(void*);
 	void listen(int);
 	static void* dispatch(void*);
 	static void handlerRead();

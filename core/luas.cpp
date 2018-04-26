@@ -3,7 +3,7 @@
 
 #include <cstdio>
 
-void Luas::init(){
+void Luas::init(void* ){
 	state_ = luaL_newstate();
 	luaL_openlibs(state_);
 

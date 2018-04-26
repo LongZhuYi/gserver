@@ -14,13 +14,18 @@ void* Hall::handlerMsg(void *ud){
 	}
 }
 
-Hall::~Hall(){
+Hall::Hall(){
 	en_ = new ENet();
+	sc_ = new Luas();
+}
+
+Hall::~Hall(){
+	delete sc_;
 }
 
 void Hall::init(){
-	sc_.init(this);
-	//en_.init(this);
+	sc_->init(this);
+	en_->init(this);
 
 	sid_ = Conf::getInt(std::string("hall_sid"));
 }
