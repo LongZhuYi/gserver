@@ -1,7 +1,9 @@
 #ifndef LUAS_H
 #define LUAS_H
 
+#include "conf.h"
 #include "script.h"
+
 extern "C"
 {	
 	#include "lua.h"
@@ -10,7 +12,10 @@ extern "C"
 }
 class Luas: public Script {
 public:
+	void registry(void*);
+	void init();
 	void loadConfig();
+	void call(void* fname, int rid, ...);
 private:
 	lua_State* state_;
 

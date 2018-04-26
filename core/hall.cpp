@@ -1,5 +1,7 @@
 #include "hall.h"
 #include "luas.h"
+#include "enet.h"
+#include "conf.h"
 
 void* Hall::handlerMsg(void *ud){
 	Hall* hall = (Hall*)(ud);
@@ -7,27 +9,26 @@ void* Hall::handlerMsg(void *ud){
 
 	while(true){
 		if(!hall->isRuning()) break;
-		Msg* msg = mq_.pop();
-		hall->doMsg(msg);
+/*		Msg* msg = mq_.pop();
+		hall->doMsg(msg);*/
 	}
 }
 
-void Hall::~Hall(){
-	delete s_;
-	s_ = NULL;
+Hall::~Hall(){
+	en_ = new ENet();
 }
 
 void Hall::init(){
 	sc_.init(this);
-	ne_.init(this);
+	//en_.init(this);
 
-	sid_ = Conf:single().getInt("hall_sid");
+	sid_ = Conf::getInt(std::string("hall_sid"));
 }
 void Hall::start(){
 	running = true;
 	pthread_t pids[2];
-	pthread_create(&pids[0], NULL, Hall::handlerMsg, (void*)this)
-	pthread_create(&pids[1], NULL, ENet::dispatch, (void*)&this->en_)
+	pthread_create(&pids[0], NULL, Hall::handlerMsg, (void*)this);
+	pthread_create(&pids[1], NULL, ENet::dispatch, (void*)&this->en_);
 
 	pthread_join(pids[0], NULL);
 	pthread_join(pids[1], NULL);

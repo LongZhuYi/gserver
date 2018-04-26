@@ -26,7 +26,7 @@ public:
 const char Lar::className[] = "Lar";
 
 Lunar<Lar>::RegType Lar::methods[] = {
-  LUNAR_DECLARE_METHOD(Lar, deposit),
+  LUNAR_DECLARE_METHOD(Lar, readStr),
   LUNAR_DECLARE_METHOD(Lar, readNum),
   {0,0}
 };

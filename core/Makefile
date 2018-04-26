@@ -1,6 +1,8 @@
-LIBS = -L/usr/local/lib -llua -llibevent -ldl
+LIBS = -L/usr/local/lib -llua -levent -lpthread -ldl
 LINC = -I/usr/local/include 
 
 OBJS = main.cpp enet.cpp luas.cpp hall.cpp 
+TARGET = hall
 
-g++ OBJS -o hall $(LINC) $(LINC)
+$(TARGET): $(OBJS)
+	g++ $(OBJS) -o hall $(LINC) $(LIBS) 

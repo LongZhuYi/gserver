@@ -6,8 +6,8 @@
 #include <queue>
 
 struct Msg{
-	uint ty;
-	uint sz;
+	int ty;
+	int sz;
 	char* ms;
 };
 
@@ -23,12 +23,12 @@ public:
 
 	void push(void* msg){
 		pthread_mutex_lock(&lock_);
-			mq_.push(msg);
+			mq_.push((Msg*)msg);
 		pthread_mutex_unlock(&lock_);
 	}
 
 	void* pop(){
-		uint sz = 0;
+		int sz = 0;
 		void* msg = NULL;
 		pthread_mutex_lock(&lock_);
 			sz = mq_.size();

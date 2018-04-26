@@ -5,14 +5,14 @@
 
 void Luas::init(){
 	state_ = luaL_newstate();
-	luaL_openlibs(L);
+	luaL_openlibs(state_);
 
-	char* name = Conf:getStr("ServerType");
-	char* path = Conf:getStr("ScriptPath")
-
+	const char* name = Conf::getStr(std::string("ServerType"));
+	const char* path = Conf::getStr(std::string("ScriptPath"));
+	const char* init = "init.lua";
 	char sp[1024];
-	snprintf("%s\\%s\\init.lua", sizeof(sp), path, name);
-	luaL_loadfile(sp);
+	snprintf(sp, sizeof(sp), path, name, init);
+	luaL_loadfile(state_, sp);
 }
 
 void Luas::registry(void* fs){
@@ -20,7 +20,7 @@ void Luas::registry(void* fs){
 	Lunar<Lar>::Register(state_);
 }
 
-void Luas::call(void* fname, rid, ...){
+void Luas::call(void* fname, int rid, ...){
 	lua_getglobal(state_, "excute");
 	lua_pushnumber(state_, rid);
 	lua_pushstring(state_, "");

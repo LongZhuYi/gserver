@@ -1,38 +1,41 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
-#include <string.h>
+#include <string>
 #include <map>
+
+using namespace std;
 
 #define MAX_LINE 1024
 
 class Conf{
-	static Conf* single(){
+public:
+/*	static Conf* single(){
 		static Conf c;
-		return &c;	
+		return &c;
 	}
-
 	Conf(){
-		path_ = std::string("../cfg/config");
+		path_ = string("../cfg/config");
 		init();
+	}*/
+	static char* getStr(string key){
+		//map<string, string>::iterator iter = conf_.find(key);
+		//if(iter != conf_.end()){
+			//return iter.c_str();
+		//}
+		return NULL;
 	}
 
-	char* getStr(std::string& key){
-		map::<std::string, std::string>::iterator iter = conf_.find(key);
-		if(iter ~= conf_.end()){
-			return iter.second.c_str();
-		}
-		assert(false);
-	}
-
-	uint getInt(std::string key){
-		map::<std::string, std::string>::iterator iter = conf_.find(key);
-		if(iter ~= conf_.end()){
-			return atoi(iter.second.c_str());
-		}
-		assert(false);
+	static int getInt(string key){
+		//map<string, string>::iterator iter = conf_.find(key);
+		//if(iter != conf_.end()){
+			//return atoi(iter.second.c_str());
+		//}
+		//assert(false);
+		return 0;
 	}
 
 	void init(){
@@ -40,16 +43,16 @@ class Conf{
 		char key[MAX_LINE];
 		char val[MAX_LINE];
 		char* tmp = NULL;
-		FILE* fd = fopen(path_, "r+");
+		FILE* fd = fopen(path_.c_str(), "r+");
 		assert(fd);
 		while( (tmp = fgets(buff, MAX_LINE, fd)) != NULL ){
 			sscanf(buff, "%s %s", key, val);
-			conf_.insert(pair<std::string, std::string>(key, val));
+			conf_.insert(pair<string, string>(key, val));
 		}
 	}
 private:
-	std::string path_;
-	std::map<std::string, std::string> conf_;
+	string path_;
+	map<string, string> conf_;
 };
 
 #endif

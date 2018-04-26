@@ -10,7 +10,7 @@ public:
 	virtual void* connet(void*);*/
 	virtual void* dispatch();
 	virtual ~Net();
-	virtual void* listen(int port);
+	virtual void listen(int port);
 };
 
 #endif
