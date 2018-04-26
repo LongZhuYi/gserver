@@ -13,37 +13,36 @@ using namespace std;
 
 class Conf{
 public:
-/*	static Conf* single(){
+	static Conf* single(){
 		static Conf c;
 		return &c;
 	}
 	Conf(){
-		path_ = string("../cfg/config");
-		init();
-	}*/
-	static char* getStr(string key){
-		//map<string, string>::iterator iter = conf_.find(key);
-		//if(iter != conf_.end()){
-			//return iter.c_str();
-		//}
+		const char* path = string("../cfg/conf").c_str();
+		loadConf(path);
+	}
+	const char* getStr(string key){
+		map<string, string>::iterator iter = conf_.find(key);
+		if(iter != conf_.end()){
+			return iter->second.c_str();
+		}
 		return NULL;
 	}
 
-	static int getInt(string key){
-		//map<string, string>::iterator iter = conf_.find(key);
-		//if(iter != conf_.end()){
-			//return atoi(iter.second.c_str());
-		//}
-		//assert(false);
+	int getInt(string key){
+		map<string, string>::iterator iter = conf_.find(key);
+		if(iter != conf_.end()){
+			return atoi(iter->second.c_str());
+		}
 		return 0;
 	}
 
-	void init(){
+	void loadConf(const char* path){
 		char buff[MAX_LINE];
 		char key[MAX_LINE];
 		char val[MAX_LINE];
 		char* tmp = NULL;
-		FILE* fd = fopen(path_.c_str(), "r+");
+		FILE* fd = fopen(path, "r+");
 		assert(fd);
 		while( (tmp = fgets(buff, MAX_LINE, fd)) != NULL ){
 			sscanf(buff, "%s %s", key, val);
@@ -51,7 +50,6 @@ public:
 		}
 	}
 private:
-	string path_;
 	map<string, string> conf_;
 };
 

@@ -38,7 +38,8 @@ static void onAccept(struct evconnlistener *listener, evutil_socket_t fd, struct
 }
 
 ENet::ENet(){
-	this->base_ = event_base_new();
+	base_ = event_base_new();
+	assert(base_);
 }
 
 ENet::~ENet(){
@@ -48,7 +49,8 @@ ENet::~ENet(){
 void ENet::init(void* app){
 	app_ = (App*)app;
 
-	int port = Conf::getInt(std::string("port"));
+	int port = Conf::single()->getInt(std::string("port"));
+	printf("init port=%d\n", port);
 	this->listen(port);
 }
 
@@ -69,11 +71,10 @@ void ENet::listen(int port){
 
 	struct evconnlistener *listener = evconnlistener_new_bind(this->base_,
 		onAccept,
-		NULL, //&this->mq_
+		this, //&this->mq_
 		LEV_OPT_CLOSE_ON_FREE | LEV_OPT_REUSEABLE,
-		0,
+		-1,
 		(struct sockaddr *)&addr,
 		sizeof(addr));
 	assert(listener);
-	//this.listeners_:push_back(listener);
 }

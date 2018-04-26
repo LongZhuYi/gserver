@@ -27,7 +27,7 @@ void Hall::init(){
 	sc_->init(this);
 	en_->init(this);
 
-	sid_ = Conf::getInt(std::string("hall_sid"));
+	sid_ = Conf::single()->getInt(std::string("hall_sid"));
 }
 void Hall::start(){
 	running = true;

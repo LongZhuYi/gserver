@@ -7,8 +7,8 @@ void Luas::init(void* ){
 	state_ = luaL_newstate();
 	luaL_openlibs(state_);
 
-	const char* name = Conf::getStr(std::string("ServerType"));
-	const char* path = Conf::getStr(std::string("ScriptPath"));
+	const char* name = Conf::single()->getStr(std::string("ServerType"));
+	const char* path = Conf::single()->getStr(std::string("ScriptPath"));
 	const char* init = "init.lua";
 	char sp[1024];
 	snprintf(sp, sizeof(sp), path, name, init);
