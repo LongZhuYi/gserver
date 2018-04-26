@@ -1,9 +1,18 @@
 #include "luas.h"
 #include "lar.h"
 
+#include <cstdio>
+
 void Luas::init(){
-  state_ = luaL_newstate();
-  luaL_openlibs(L);
+	state_ = luaL_newstate();
+	luaL_openlibs(L);
+
+	char* name = Conf:getStr("ServerType");
+	char* path = Conf:getStr("ScriptPath")
+
+	char sp[1024];
+	snprintf("%s\\%s\\init.lua", sizeof(sp), path, name);
+	luaL_loadfile(sp);
 }
 
 void Luas::registry(void* fs){
