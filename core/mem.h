@@ -21,4 +21,4 @@ private:
 	static Mem m_;
 };
 
-#endif
+#endif ///
