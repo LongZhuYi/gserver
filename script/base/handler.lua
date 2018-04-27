@@ -4,6 +4,7 @@ local Funcs = {
 }
 
 function excute(funNmae, rid, ...)
+	print("------excute----------")
 	local func = Funcs[funNmae]
 	local obj  = entityM:getEntity(rid)
 	assert(func)

@@ -6,6 +6,7 @@ public:
 	virtual void init(void*){};
 	void registry(void*);
 	void call(void*, ...);
+	void luaAddPath(const char *value);
 };
 
 #endif

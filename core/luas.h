@@ -15,6 +15,7 @@ public:
 	void init(void*);
 	void registry(void*);
 	void loadConfig();
+	void luaAddPath(const char *value);
 	void call(void* fname, int rid, ...);
 private:
 	lua_State* state_;

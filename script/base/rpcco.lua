@@ -1,4 +1,4 @@
-require "queue"
+require 'common/queue'
 
 local coyield   = coroutine.yield
 local coresume  = coroutine.resume

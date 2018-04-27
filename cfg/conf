@@ -1,3 +1,5 @@
 sid  1000
-port 1001
+port 8999
 name hall
+stype hall
+spath ../script/
