@@ -17,14 +17,15 @@ public:
 	void stop();
 	void doMsg(void*);
 	void pushMsg(void*);
+	bool isRuning();
+	void* getNet();
 	static void* handlerMsg(void*);
-	virtual bool isRuning();
 private:
 	int    sid_;
 	MQ     mq_;
 	Net*   en_;
 	Script* sc_;
-	bool running;
+	bool running_;
 };
 
 #endif

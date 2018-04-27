@@ -18,7 +18,8 @@ public:
 	void onRead();
 	void onWrite();
 	static void* dispatch(void*);
-	static void onAccept(struct evconnlistener*, evutil_socket_t, struct sockaddr, int, void*);
+	void* getState();
+	//void onAccept(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int, void*);
 	App*   app_;
 private:
 	

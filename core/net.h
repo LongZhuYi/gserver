@@ -7,6 +7,7 @@ public:
 	virtual void listen(int port)=0;
 	virtual void onRead()=0;
 	virtual void onWrite()=0;
+	virtual void* getState()=0;
 };
 
 #endif
