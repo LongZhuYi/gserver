@@ -1,0 +1,9 @@
+1、安装hiredis
+git clone https://github.com/redis/hiredis
+git clone https://github.com/redis/hiredis  
+cd hiredis  
+make  
+sudo make install
+sudo ldconfig /usr/local/lib 
+
+g++ OperatorRedis.cpp -o OperatorRedis -lhiredis

@@ -1,4 +1,4 @@
-LIBS = -L/usr/local/lib -llua -levent -lpthread -ldl
+LIBS = -L/usr/local/lib -llua -levent -lpthread -lhiredis -ldl
 LINC = -I/usr/local/include 
 
 OBJS = main.cpp enet.cpp luas.cpp hall.cpp 
