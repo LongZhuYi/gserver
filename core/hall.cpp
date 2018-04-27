@@ -9,7 +9,8 @@ void* Hall::handlerMsg(void *ud){
 	while(true){
 		if(!hall->isRuning()) break;
 		Msg* msg = (Msg*)hall->getMsg();
-		hall->doMsg(msg);
+		if(msg!=NULL)
+			hall->doMsg(msg);
 	}
 }
 
@@ -46,10 +47,12 @@ void Hall::stop(){
 	running_ = false;
 }
 
-void Hall::doMsg(void* msg){
-/*	int ty = msg->ty;
-	const char* ms = msg->ms;*/
-	
+void Hall::doMsg(void* m){
+	Msg* msg = (Msg*)(m);
+	int ty = msg->ty;
+	int sz = msg->sz;
+	const char* ms = msg->ms;
+	printf("Hall::doMsg %s %d %d\n", ms, sz, ty);
 }
 
 bool Hall::isRuning(){

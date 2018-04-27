@@ -17,12 +17,14 @@ static void onRead(struct bufferevent* bev, void *ud)
 	int sz = bufferevent_read(bev, buff, MAX_BUFF);
 	Msg* msg = (Msg*) Mem::Alloc(sizeof(Msg));
 	msg->ms  = (char*) Mem::Alloc(sz);
-	memcpy(msg->ms, buff, sz);
+	buff[sz] = '\0';
+	memcpy(msg->ms, buff, sz+1);
 	msg->sz = sz;
+	msg->ty = 0;
 
 	ENet* net = (ENet*)ud;
 	net->app_->pushMsg((void*)msg);
-	printf("%s\n", "onRead");
+	printf("%s %d\n", "onRead", sz);
 }
 
 static void onWrite(struct bufferevent* bev, void* ud){
@@ -51,12 +53,12 @@ ENet::~ENet(){
 }
 
 void ENet::init(void* app){
-/*	app_ = (App*)app;
+	app_ = (App*)app;
 	int port = Conf::single()->getInt(std::string("port"));
-	this->listen(port);*/
+	this->listen(port);
 
 
-	char ip[1024];
+/*	char ip[1024];
 	char port[8];
 	const char* gaddr = Conf::single()->getStr(std::string("globalAddr"));
 	char* tmp = ip;
@@ -70,7 +72,7 @@ void ENet::init(void* app){
 		}else
 			tmp[j++] = gaddr[i];
 	}
-	this->connect(ip, atoi(port));
+	this->connect(ip, atoi(port));*/
 }
 
 /*void ENet::onRead(){
