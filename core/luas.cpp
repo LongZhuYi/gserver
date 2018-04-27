@@ -19,7 +19,7 @@ void Luas::init(void* ){
 	path.append("init.lua");
 	luaL_loadfile(state_, path.c_str());
 	int result = lua_pcall(state_, 0, 0, 0);
-	LOG("%s", "Luas::init")
+	//LOG("%s", "Luas::init")
 }
 
 void Luas::registry(void* fs){

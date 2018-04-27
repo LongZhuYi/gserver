@@ -5,7 +5,7 @@
 #define W 2
 #define E 3
 
-void logHandler(int, char*, ...)
+/*void logHandler(int, char*, ...)
 
 #define LOG(fa, ...) logHandler(N, fa, ...)
 #define WARRING(fa, ...) logHandler(W, fa, ...)
@@ -21,6 +21,6 @@ void logHandler(int level, char* fa, ...){
 	snprintf(buff, MAX_LINE, fa, ap);
 	va_end(ap);
 	printf("%s\n",buff);
-}
+}*/
 
 #endif

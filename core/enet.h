@@ -15,8 +15,8 @@ public:
 	~ENet();
 	void init(void*);
 	void listen(int);
-	void onRead();
-	void onWrite();
+/*	void onRead();
+	void onWrite();*/
 	static void* dispatch(void*);
 	void* getState();
 	void pushSS(Session*);

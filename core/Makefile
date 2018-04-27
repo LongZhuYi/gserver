@@ -5,4 +5,4 @@ OBJS = main.cpp enet.cpp luas.cpp hall.cpp
 TARGET = hall
 
 $(TARGET): $(OBJS)
-	g++ $(OBJS) -o hall $(LINC) $(LIBS) 
+	g++ $(OBJS) -o $(TARGET) $(LINC) $(LIBS) 

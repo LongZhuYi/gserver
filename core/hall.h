@@ -19,10 +19,12 @@ public:
 	void pushMsg(void*);
 	bool isRuning();
 	void* getNet();
+	void* getMsg();
 	static void* handlerMsg(void*);
+	MQ     mq_;
 private:
 	int    sid_;
-	MQ     mq_;
+	
 	Net*   en_;
 	Script* sc_;
 	bool running_;

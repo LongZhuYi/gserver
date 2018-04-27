@@ -6,11 +6,9 @@
 
 void* Hall::handlerMsg(void *ud){
 	Hall* hall = (Hall*)(ud);
-	MQ& mq = hall->mq_;
-
 	while(true){
 		if(!hall->isRuning()) break;
-		Msg* msg = mq_.pop();
+		Msg* msg = (Msg*)hall->getMsg();
 		hall->doMsg(msg);
 	}
 }
@@ -49,8 +47,8 @@ void Hall::stop(){
 }
 
 void Hall::doMsg(void* msg){
-	int ty = msg->ty;
-	const char* ms = msg->ms;
+/*	int ty = msg->ty;
+	const char* ms = msg->ms;*/
 	
 }
 
@@ -65,4 +63,9 @@ void Hall::pushMsg(void* m){
 
 void* Hall::getNet(){
 	return (void*)(en_);
+}
+
+void* Hall::getMsg(){
+	Msg* m = (Msg*)mq_.pop();
+	return (void*)m;
 }

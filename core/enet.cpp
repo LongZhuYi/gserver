@@ -32,6 +32,7 @@ static void onWrite(struct bufferevent* bev, void* ud){
 
 static void onAccept(struct evconnlistener *listener, evutil_socket_t fd, struct sockaddr *sa, int d, void *ud)
 {
+	printf("%s\n", onAccept);
 	void* net = (Net*)(ud); 
 	Session* sn = new Session(fd, 0);
 	struct event_base *base = evconnlistener_get_base(listener);
@@ -50,12 +51,14 @@ ENet::~ENet(){
 }
 
 void ENet::init(void* app){
-	//app_ = (App*)app;
-	//int port = Conf::single()->getInt(std::string("port"));
-	//this->listen(port);
+/*	app_ = (App*)app;
+	int port = Conf::single()->getInt(std::string("port"));
+	this->listen(port);*/
+
+
 	char ip[1024];
 	char port[8];
-	const char* gaddr = Conf::single()->getInt(std::string("globalAddr"));
+	const char* gaddr = Conf::single()->getStr(std::string("globalAddr"));
 	char* tmp = ip;
 	int j=0;
 	int len = strlen(gaddr);
@@ -70,13 +73,13 @@ void ENet::init(void* app){
 	this->connect(ip, atoi(port));
 }
 
-void ENet::onRead(){
+/*void ENet::onRead(){
 
 }
 
 void ENet::onWrite(){
 
-}
+}*/
 
 void* ENet::dispatch(void* ud){
 	App* app = (App*)(ud);
@@ -115,13 +118,15 @@ void ENet::pushSS(Session* ss){
 }
 
 void ENet::connect(char* ip, int port){
-	printf("ENet::connect %s %d\n", ip, port);
+	//printf("ENet::connect %s %d\n", ip, port);
 	struct bufferevent *bev = bufferevent_socket_new(base_, -1, BEV_OPT_CLOSE_ON_FREE);
 	struct sockaddr_in sin;
 	memset(&sin, 0, sizeof(sin));
-	sin.sin_addr.s_addr = inet_addr(ip.c_str());
+	sin.sin_addr.s_addr = inet_addr(ip);
 	sin.sin_port = htons(port);
+	sin.sin_family = AF_INET;
 
 	bufferevent_setcb(bev, onRead, NULL, NULL, NULL);
-	bufferevent_socket_connect(bev,(struct sockaddr *)&sin, sizeof(sin));
+	int result = bufferevent_socket_connect(bev,(struct sockaddr *)&sin, sizeof(sin));
+	printf("ENet::connect result %s %d %d\n",ip, port, result);
 }

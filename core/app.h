@@ -12,6 +12,7 @@ public:
 	void doMsg(void*);
 	virtual bool isRuning()=0;
 	virtual void pushMsg(void*)=0;
+	virtual void* getMsg()=0;
 	virtual void* getNet()=0;
 };
 
