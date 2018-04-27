@@ -1,4 +1,5 @@
-module "entity"
+-- module "entity"
+--module("entity", package.seeall)
 
 entity = entity or {}
 

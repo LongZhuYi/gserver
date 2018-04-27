@@ -1,3 +1,5 @@
+--module("queue", package.seeall)
+
 queue = queue or {}
 
 function queue:new()

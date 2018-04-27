@@ -4,6 +4,9 @@
 
 #include <cstdio>
 #include <string>
+#include <sstream>
+
+int pcall_callback_err_fun(lua_State* L);
 
 void Luas::init(void* ){
 	state_ = luaL_newstate();
@@ -20,6 +23,7 @@ void Luas::init(void* ){
 	luaL_loadfile(state_, path.c_str());
 	int result = lua_pcall(state_, 0, 0, 0);
 	//LOG("%s", "Luas::init")
+	printf("Luas::init result %d\n", result);
 }
 
 void Luas::registry(void* fs){
@@ -27,11 +31,20 @@ void Luas::registry(void* fs){
 	Lunar<Lar>::Register(state_);
 }
 
-void Luas::call(void* fname, int rid, ...){
+void Luas::call(const char* str, int rid, ...){
+	//lua_pushcfunction(state_, pcall_callback_err_fun);
+	//int pos_err = lua_gettop(state_);
+
 	lua_getglobal(state_, "excute");
+	lua_pushstring(state_, str);
 	lua_pushnumber(state_, rid);
-	lua_pushstring(state_, "");
-	lua_pcall(state_, 2, 1, 0);
+	int res = lua_pcall(state_, 2, 0, 0);
+	if(res !=0){
+		int t = lua_type(state_, -1);  
+        const char* err = lua_tostring(state_,-1);  
+        printf("Error: %s\n", err);  
+        lua_pop(state_, 1);
+	}
 }
 
 void Luas::loadConfig(){
@@ -51,8 +64,19 @@ void Luas::luaAddPath(const char* value) {
 	lua_pop(state_, 2);
 }
 
-/*
-    v.append(lua_tostring(ls, -1));  
-    v.append(";");  
-    v.append(value); 
-*/
+int pcall_callback_err_fun(lua_State* L)  
+{  
+    lua_Debug debug= {};  
+    int ret = lua_getstack(L, 2, &debug);
+    lua_getinfo(L, "Sln", &debug);  
+    std::string err = lua_tostring(L, -1);  
+    lua_pop(L, 1);  
+    std::stringstream m;  
+    m << debug.short_src << ":line " << debug.currentline;  
+    if (debug.name != 0) {  
+        m << "(" << debug.namewhat << " " << debug.name << ")";  
+    }
+    m << " [" << err << "]";  
+    lua_pushstring(L, m.str().c_str());  
+    return 1;  
+}  

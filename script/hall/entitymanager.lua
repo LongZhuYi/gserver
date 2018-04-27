@@ -1,5 +1,5 @@
-module "entityManager"
-
+--module "entityManager"
+--module("entityManager", package.seeall)
 local __EntityList__ = {}
 entityM = entityM or {}
 

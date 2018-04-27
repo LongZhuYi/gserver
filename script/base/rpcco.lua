@@ -1,5 +1,7 @@
 require 'common/queue'
 
+--module("rpcco", package.seeall)
+
 local coyield   = coroutine.yield
 local coresume  = coroutine.resume
 local cocreate  = coroutine.create
@@ -9,10 +11,12 @@ local corunning = coroutine.running
 local MAX_RUNING = 1024
 local MAX_COID = 1024
 local COID     = 0
-local rpcco = rpcco or {}
+
 local cpool = cpool or {}
 local tpool = tpool or {}
 local rpool = rpool or {}
+
+rpcco = rpcco or {}
 
 function tick()
 	for cid, co in pairs(rpool) do 
@@ -25,6 +29,7 @@ function ret(task, ...)
 end
 
 function createCo(func, ...)
+	print("createCo bbb",#cpool)
 	COID = COID + 1
 	COID = COID % MAX_COID
 	local task = {
@@ -32,14 +37,22 @@ function createCo(func, ...)
 		func = func,
 		parm = {...},
 	}
+	print("createCo bbb222")
 	if #cpool > 0 then 
+		print("---cocreate---0000000")
 		local co = cpool[#cpool]
 		table.remove(cpool, #cpool)
 		return co, task
-	elseif table.length(rpool) < MAX_RUNING then
+	elseif #rpool < MAX_RUNING then
+		print("---cocreate---00")
 		local co = cocreate(function(...)
+			print("---cocreate---11", task, task.func)
+			for k,v in pairs(task) do
+				print("task",k,v)
+			end
 			local func = task.func
-			ret(task, func(...))
+			func(...)
+			--ret(task, func(...))
 			rpool[task.cid] = nil
 			while true do 
 				if #tpool == 0 then 
@@ -54,16 +67,20 @@ function createCo(func, ...)
 		end)
 		return co, task
 	else
+		print("---cocreate---555")
 		return nil, task
 	end
 end
 
-function excute(obj, func, ...)
+function rpcco:excuteC(obj, func, ...)
+	print("excute11")
 	local co, task = createCo(func, ...)
 	if co then
+		print("excute22")
 		rpool[task.cid] = co
-		coresume(co)
+		coresume(co, task)
 	else
+		print("excute33")
 		table.insert(tpool, task)
 	end
 end

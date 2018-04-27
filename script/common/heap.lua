@@ -1,4 +1,4 @@
-
+--module("heap", package.seeall)
 heap = heap or {}
 
 function heap:new()
