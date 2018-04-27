@@ -13,14 +13,15 @@ class ENet : public Net {
 public:
 	ENet();
 	~ENet();
-	virtual void init(void*);
+	void init(void*);
 	void listen(int);
+	void onRead();
+	void onWrite();
 	static void* dispatch(void*);
-	static void handlerRead();
-	static void acceptCallbk(struct evconnlistener*, evutil_socket_t, struct sockaddr, int d, void*);
-private:
+	static void onAccept(struct evconnlistener*, evutil_socket_t, struct sockaddr, int, void*);
 	App*   app_;
+private:
+	
 	struct event_base* base_;
-	//std::vecotr<struct evconnlistener*> listeners_;
 	std::map<int, void*> ss_;
 };

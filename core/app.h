@@ -7,8 +7,8 @@ public:
 	void start();
 	void stop();
 	void doMsg(void*);
-	virtual bool isRuning(){};
-	static void * handlerMsg(void *ud);
+	virtual void pushMsg(void*)=0;
+	virtual bool isRuning()=0;
 };
 
 #endif

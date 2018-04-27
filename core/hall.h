@@ -16,6 +16,7 @@ public:
 	void start();
 	void stop();
 	void doMsg(void*);
+	void pushMsg(void*);
 	static void* handlerMsg(void*);
 	virtual bool isRuning();
 private:

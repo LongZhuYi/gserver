@@ -33,7 +33,7 @@ void Hall::start(){
 	running = true;
 	pthread_t pids[2];
 	pthread_create(&pids[0], NULL, Hall::handlerMsg, (void*)this);
-	pthread_create(&pids[1], NULL, ENet::dispatch, (void*)&this->en_);
+	pthread_create(&pids[1], NULL, ENet::dispatch, (void*)this);
 
 	pthread_join(pids[0], NULL);
 	pthread_join(pids[1], NULL);
@@ -49,4 +49,9 @@ void Hall::doMsg(void* msg){
 
 bool Hall::isRuning(){
 	return running;
+}
+
+void Hall::pushMsg(void* m){
+	Msg* msg = (Msg*)(m);
+	mq_.push(msg);
 }

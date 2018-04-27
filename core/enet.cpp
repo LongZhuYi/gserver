@@ -19,8 +19,8 @@ static void onRead(struct bufferevent* bev, void *ud)
 	memcpy(msg->ms, buff, sz);
 	msg->sz = sz;
 
-	MQ* mq = (MQ*)ud;
-	mq->push(msg);
+	ENet* net = (ENet*)ud;
+	net->app_->pushMsg((void*)msg);
 }
 
 static void onWrite(struct bufferevent* bev, void* ud){
@@ -54,6 +54,14 @@ void ENet::init(void* app){
 	this->listen(port);
 }
 
+void ENet::onRead(){
+
+}
+
+void ENet::onWrite(){
+
+}
+
 void* ENet::dispatch(void* ud){
 	ENet* ent = (ENet*)(ud);
 	while(true){
@@ -71,7 +79,7 @@ void ENet::listen(int port){
 
 	struct evconnlistener *listener = evconnlistener_new_bind(this->base_,
 		onAccept,
-		this, //&this->mq_
+		this, 
 		LEV_OPT_CLOSE_ON_FREE | LEV_OPT_REUSEABLE,
 		-1,
 		(struct sockaddr *)&addr,

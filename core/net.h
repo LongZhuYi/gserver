@@ -3,11 +3,10 @@
 
 class Net{
 public:
-	virtual void  init(void*){};
-	void* write(void*);
-	void* read(void*);
-	void* dispatch();
-	void listen(int port);
+	virtual void init(void*)=0;
+	virtual void listen(int port)=0;
+	virtual void onRead()=0;
+	virtual void onWrite()=0;
 };
 
 #endif
