@@ -8,11 +8,11 @@ void* Hall::handlerMsg(void *ud){
 	Hall* hall = (Hall*)(ud);
 	MQ& mq = hall->mq_;
 
-	//while(true){
-		//if(!hall->isRuning()) break;
-/*		Msg* msg = mq_.pop();
-		hall->doMsg(msg);*/
-	//}
+	while(true){
+		if(!hall->isRuning()) break;
+		Msg* msg = mq_.pop();
+		hall->doMsg(msg);
+	}
 }
 
 Hall::Hall(){
@@ -49,7 +49,9 @@ void Hall::stop(){
 }
 
 void Hall::doMsg(void* msg){
-
+	int ty = msg->ty;
+	const char* ms = msg->ms;
+	
 }
 
 bool Hall::isRuning(){

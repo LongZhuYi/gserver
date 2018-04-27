@@ -19,7 +19,9 @@ public:
 	void onWrite();
 	static void* dispatch(void*);
 	void* getState();
+	void pushSS(Session*);
 	//void onAccept(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int, void*);
+	void connect(char* ip, int port);
 	App*   app_;
 private:
 	

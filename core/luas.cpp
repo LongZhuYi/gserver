@@ -1,5 +1,6 @@
 #include "luas.h"
 #include "lar.h"
+#include "log.h"
 
 #include <cstdio>
 #include <string>
@@ -18,7 +19,7 @@ void Luas::init(void* ){
 	path.append("init.lua");
 	luaL_loadfile(state_, path.c_str());
 	int result = lua_pcall(state_, 0, 0, 0);
-	//call(NULL, 1);
+	LOG("%s", "Luas::init")
 }
 
 void Luas::registry(void* fs){
@@ -48,7 +49,6 @@ void Luas::luaAddPath(const char* value) {
 	lua_pushstring(state_, v.c_str());
 	lua_setfield(state_, -3, name);
 	lua_pop(state_, 2);
-	printf("luaAddPath %s\n", v.c_str());
 }
 
 /*
