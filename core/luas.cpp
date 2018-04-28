@@ -1,3 +1,5 @@
+#include "lunar.h"
+#include "hredis.h"
 #include "luas.h"
 #include "lar.h"
 #include "log.h"
@@ -22,8 +24,10 @@ void Luas::init(void* ){
 	path.append("init.lua");
 	luaL_loadfile(state_, path.c_str());
 	int result = lua_pcall(state_, 0, 0, 0);
-	//LOG("%s", "Luas::init")
 	printf("Luas::init result %d\n", result);
+
+	Lunar<Lar>::Register(state_);
+	Lunar<HRedis>::Register(state_);
 }
 
 void Luas::registry(void* fs){
