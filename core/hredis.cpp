@@ -25,8 +25,15 @@ char* HRedis::query(const char* cmd){
 }
 
 int HRedis::excute(lua_State *L){
-	const char* cmd = luaL_checkStr(L, 1);
+	const char* cmd = luaL_checkstring(L, 1);
 	const char* res = query(cmd);
 	lua_pushstring(L, res);
 	return 1;
 }
+
+const char HRedis::className[] = "HRedis";
+
+Lunar<HRedis>::RegType HRedis::methods[] = {
+    LUNAR_DECLARE_METHOD(HRedis, excute),
+    {0,0}
+};

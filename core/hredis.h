@@ -17,11 +17,4 @@ private:
     //lua_State*    state_;
 };
 
-const char HRedis::className[] = "HRedis";
-
-Lunar<HRedis>::RegType HRedis::methods[] = {
-  LUNAR_DECLARE_METHOD(HRedis, excute),
-  {0,0}
-};
-
 #endif

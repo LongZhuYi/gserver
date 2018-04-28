@@ -35,7 +35,11 @@ function excute(funNmae, rid, ...)
 end
 
 function loadFromDb(name)
-	return {rid=100}
+	local tb = HRedis:query("Player", name)
+	if not tb then 
+		tb = {name=name, rid=10001}
+	end
+	return tb
 end
 
 function loadAccount(name)
