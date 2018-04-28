@@ -1,3 +1,6 @@
+#ifndef LUNAR_H
+#define LUNAR_H
+
 extern "C" {
   #include "lua.h"
   #include "lauxlib.h"
@@ -206,3 +209,5 @@ private:
 };
 
 #define LUNAR_DECLARE_METHOD(Class, Name) {#Name, &Class::Name}
+
+#endif

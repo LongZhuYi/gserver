@@ -11,6 +11,8 @@ end
 function HRedis:query(tName, key)
 	local cmd = string.format("hget %s %s", tName, key)
 	local res = self:excute(cmd)
+	res = trim(res)
+	print("HRedis:query res=", res)
 	local tb  = table:unserialize(res)
 	return tb
 end

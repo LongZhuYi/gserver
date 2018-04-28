@@ -2,21 +2,22 @@ require "hall/entity"
 require "hall/entitymanager"
 require "base/rpcco"
 
+local HRedis = HRedis
+local trim = trim
+
 function login(name)
 	print("login bbb")
+	local name = "Long"
 	local account = loadAccount(name)
 	local rid = account.rid 
 	local e = entity:new(rid)
+	entityM:setEntity(rid, e)
 	print("login", e.rid)
 	return 1
 end
 
 function oper1(obj)
 
-end
-
-function trim(s) 
-	return (string.gsub(s, "^%s*(.-)%s*$", "%1"))
 end
 
 local Funcs = {
@@ -34,16 +35,20 @@ function excute(funNmae, rid, ...)
 	rpcco:excuteC(obj, func, ...)
 end
 
-function loadFromDb(name)
-	local tb = HRedis:query("Player", name)
+function loadFromDb(tName, key)
+	print("loadFromDb000")
+	local redis  = HRedis()
+	local tb = redis:query(tName, key)
 	if not tb then 
-		tb = {name=name, rid=10001}
+		-- tb = {name="Long", rid=10001}
+		-- redis:update(tName, key, tb)
+		print("-----nilnilnil------------")
 	end
 	return tb
 end
 
 function loadAccount(name)
-	local account = loadFromDb(name)
+	local account = loadFromDb("Account", name)
 	return account
 end
 

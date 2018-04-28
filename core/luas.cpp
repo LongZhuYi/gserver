@@ -1,4 +1,3 @@
-#include "lunar.h"
 #include "hredis.h"
 #include "luas.h"
 #include "lar.h"
@@ -13,9 +12,9 @@ int pcall_callback_err_fun(lua_State* L);
 void Luas::init(void* ){
 	state_ = luaL_newstate();
 	luaL_openlibs(state_);
+	registry(NULL);
 
 	luaAddPath(std::string("../script/?.lua").c_str());
-
 	const char* name = Conf::single()->getStr(std::string("stype"));
 	const char* spath = Conf::single()->getStr(std::string("spath"));
 	std::string path(spath);
@@ -24,15 +23,14 @@ void Luas::init(void* ){
 	path.append("init.lua");
 	luaL_loadfile(state_, path.c_str());
 	int result = lua_pcall(state_, 0, 0, 0);
+	//LOG("%s", "Luas::init")
 	printf("Luas::init result %d\n", result);
-
-	Lunar<Lar>::Register(state_);
-	Lunar<HRedis>::Register(state_);
 }
 
 void Luas::registry(void* fs){
 	//可以在这里通过luanr向LUA注册需要的类
 	Lunar<Lar>::Register(state_);
+	Lunar<HRedis>::Register(state_);
 }
 
 void Luas::call(const char* str, int rid, ...){

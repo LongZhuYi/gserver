@@ -12,12 +12,12 @@ function table:serialize(obj)
     elseif t == "table" then
         lua = lua .. "{\n"
     for k, v in pairs(obj) do
-        lua = lua .. "[" .. serialize(k) .. "]=" .. serialize(v) .. ",\n"
+        lua = lua .. "[" .. table:serialize(k) .. "]=" .. table:serialize(v) .. ",\n"
     end
     local metatable = getmetatable(obj)
         if metatable ~= nil and type(metatable.__index) == "table" then
         for k, v in pairs(metatable.__index) do
-            lua = lua .. "[" .. serialize(k) .. "]=" .. serialize(v) .. ",\n"
+            lua = lua .. "[" .. table:serialize(k) .. "]=" .. table:serialize(v) .. ",\n"
         end
     end
         lua = lua .. "}"
@@ -30,8 +30,9 @@ function table:serialize(obj)
 end
 
 function table:unserialize(lua)
+    print("table:unserialize", lua)
     local t = type(lua)
-    if t == "nil" or lua == "" then
+    if t == "nil" or lua == "" or lua == "nil" then
         return nil
     elseif t == "number" or t == "string" or t == "boolean" then
         lua = tostring(lua)
@@ -44,4 +45,8 @@ function table:unserialize(lua)
         return nil
     end
     return func()
+end
+
+function trim(s) 
+    return (string.gsub(s, "^%s*(.-)%s*$", "%1"))
 end

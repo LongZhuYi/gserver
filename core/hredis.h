@@ -5,16 +5,19 @@
 #include <iostream>
 #include <string>
 #include "lunar.h"
+ #include <string.h>
 
 class HRedis{
 public:
-    HRedis();
+    HRedis(lua_State *L);
     char* query(const char* cmd);
     int excute(lua_State *L);
+    static const char className[];
     static Lunar<HRedis>::RegType methods[];
 private:
     redisContext* context_;
     //lua_State*    state_;
+    char buff_[1024];
 };
 
 #endif
