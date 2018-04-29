@@ -5,6 +5,14 @@
 #include <string>
 #include <queue>
 
+struct TFunc{
+	char* funName;
+	int id;
+	long key;
+	int repcnt;
+	int delay;
+};
+
 struct Msg{
 	int ty;
 	int sz;

@@ -1,7 +1,3 @@
-require "hall/entity"
-require "hall/entitymanager"
-require "base/rpcco"
-
 local HRedis = HRedis
 local trim = trim
 

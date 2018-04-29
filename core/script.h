@@ -5,7 +5,7 @@ class Script{
 public:
 	virtual void init(void*){};
 	void registry(void*);
-	virtual void call(const char*, int rid, ...)=0;
+	virtual void call(const char*, const char*, int rid, ...)=0;
 	void luaAddPath(const char *value);
 };
 

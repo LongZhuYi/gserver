@@ -14,6 +14,7 @@ public:
 	virtual void pushMsg(void*)=0;
 	virtual void* getMsg()=0;
 	virtual void* getNet()=0;
+	virtual void   doTick(long)=0;
 };
 
 #endif

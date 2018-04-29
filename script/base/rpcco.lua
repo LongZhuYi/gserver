@@ -1,5 +1,3 @@
-require 'common/queue'
-
 --module("rpcco", package.seeall)
 
 local coyield   = coroutine.yield

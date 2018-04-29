@@ -1,4 +1,4 @@
---module("queue", package.seeall)
+--module("Queue", package.seeall)
 
 queue = queue or {}
 

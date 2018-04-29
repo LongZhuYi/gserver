@@ -3,29 +3,42 @@
 #include "enet.h"
 #include "conf.h"
 #include <pthread.h>
+#include <unistd.h>
+
+void Hall::doTick(long id){
+	sc_->call("tick", "", id);
+}
 
 void* Hall::handlerMsg(void *ud){
 	Hall* hall = (Hall*)(ud);
 	while(true){
 		if(!hall->isRuning()) break;
 		Msg* msg = (Msg*)hall->getMsg();
-		if(msg!=NULL)
+		if(msg!=NULL) 
 			hall->doMsg(msg);
+		else 
+			sleep(1);
+		hall->tm_->tick();
 	}
 }
 
 Hall::Hall(){
 	en_ = new ENet();
 	sc_ = new Luas();
+	tm_ = new Timer();
+	tm_->addTick(1, 1, 5, -1);
 }
 
 Hall::~Hall(){
-	delete sc_;
+	delete sc_; sc_ = NULL;
+	delete en_; en_ = NULL;
+	delete tm_; tm_ = NULL;
 }
 
 void Hall::init(){
 	sc_->init(this);
 	en_->init(this);
+	tm_->init(this);
 
 	sid_ = Conf::single()->getInt(std::string("hall_sid"));
 	printf("%s\n", "Hall::init");
@@ -53,7 +66,7 @@ void Hall::doMsg(void* m){
 	int sz = msg->sz;
 	const char* ms = msg->ms;
 	//printf("Hall::doMsg %s %d %d\n", ms, sz, ty);
-	sc_->call(ms, 10);
+	sc_->call("excute", ms, 10);
 }
 
 bool Hall::isRuning(){

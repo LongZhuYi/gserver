@@ -33,14 +33,24 @@ void Luas::registry(void* fs){
 	Lunar<HRedis>::Register(state_);
 }
 
-void Luas::call(const char* str, int rid, ...){
+void Luas::call(const char* fName, const char* str, int rid, ...){
 	//lua_pushcfunction(state_, pcall_callback_err_fun);
 	//int pos_err = lua_gettop(state_);
 
-	lua_getglobal(state_, "excute");
+	lua_getglobal(state_, fName);
+	//lua_pushstring(state_, str);
+	//lua_pushnumber(state_, rid);
+	assert(lua_isfunction(state_, 1));
+	lua_newtable(state_);
+	lua_pushstring(state_, "msg");
 	lua_pushstring(state_, str);
+	lua_settable(state_, -3);
+
+	lua_pushstring(state_, "id");
 	lua_pushnumber(state_, rid);
-	int res = lua_pcall(state_, 2, 0, 0);
+	lua_settable(state_, -3);
+	int res = lua_pcall(state_, 1, 0, 0);
+	assert(lua_isfunction(state_, 1));
 	if(res !=0){
 		int t = lua_type(state_, -1);  
         const char* err = lua_tostring(state_,-1);  

@@ -1,27 +1,28 @@
 --module("heap", package.seeall)
-heap = heap or {}
 
-function heap:new()
+Heap = Heap or {}
+
+function Heap:new()
 	local o = {data={}}
 	setmetatable(o, {__index=self})
 	return o
 end
 
-function heap:push(item)
+function Heap:push(item)
 	assert(item and item.key)
 	table.insert(self.data, item)
 	self:upper(#self.data)
 end
 
-function heap:pop()
+function Heap:pop()
 	if #self.data == 0 then return end
 	self.data[1] = self.data[#self.data]
 	self.data[#self.data] = nil 
 	self:lower(1)
 end
 
-function upper(pos)
-	while pos > 1 then
+function Heap:upper(pos)
+	while pos > 1 do
 		local p = math.floor(pos/2)
 		if self.data[pos].key < self.data[p].key then 
 			self.data[pos], self.data[p] = self.data[p], self.data[pos]
@@ -32,7 +33,7 @@ function upper(pos)
 	end
 end
 
-function lower(pos)
+function Heap:lower(pos)
 	while pos < self:size() do
 		local l = pos*2 
 		local r = pos*2+1
@@ -51,14 +52,14 @@ function lower(pos)
 	end
 end
 
-function size()
+function Heap:size()
 	return #self.data
 end
 
-function heap:top()
+function Heap:top()
 	return self.data[1]
 end
 
-function heap:parent(pos) return math.floor(pos/2) end
-function heap:left(pos) return pos*2 end
-function heap:right(pos) return 2*pos+1 end
+function Heap:parent(pos) return math.floor(pos/2) end
+function Heap:left(pos) return pos*2 end
+function Heap:right(pos) return 2*pos+1 end

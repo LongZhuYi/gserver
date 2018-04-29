@@ -34,7 +34,7 @@ static void onWrite(struct bufferevent* bev, void* ud){
 
 static void onAccept(struct evconnlistener *listener, evutil_socket_t fd, struct sockaddr *sa, int d, void *ud)
 {
-	printf("%s\n", onAccept);
+	printf("%s\n", "onAccept");
 	void* net = (Net*)(ud); 
 	Session* sn = new Session(fd, 0);
 	struct event_base *base = evconnlistener_get_base(listener);

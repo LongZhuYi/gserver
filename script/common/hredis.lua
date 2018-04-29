@@ -1,3 +1,5 @@
+--module("redis", package.seeall)
+
 local HRedis = HRedis
 local table  = table
 
