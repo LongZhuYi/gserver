@@ -24,7 +24,6 @@ static void onRead(struct bufferevent* bev, void *ud)
 
 	ENet* net = (ENet*)ud;
 	net->app_->pushMsg((void*)msg);
-	//printf("%s %d\n", "onRead", sz);
 }
 
 static void onWrite(struct bufferevent* bev, void* ud){

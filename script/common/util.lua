@@ -30,7 +30,6 @@ function table:serialize(obj)
 end
 
 function table:unserialize(lua)
-    print("table:unserialize", lua)
     local t = type(lua)
     if t == "nil" or lua == "" or lua == "nil" then
         return nil

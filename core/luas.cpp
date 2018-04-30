@@ -48,9 +48,9 @@ void Luas::call(const char* fName, const char* str, int rid, ...){
 	lua_pushstring(state_, str);
 	lua_settable(state_, -3);
 
-	lua_pushstring(state_, "id");
+/*	lua_pushstring(state_, "id");
 	lua_pushnumber(state_, rid);
-	lua_settable(state_, -3);
+	lua_settable(state_, -3);*/
 	int res = lua_pcall(state_, 1, 0, 0);
 	if(res != 0){
 		int t = lua_type(state_, -1);  

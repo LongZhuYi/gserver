@@ -35,21 +35,14 @@ function createCo(func, ...)
 		func = func,
 		parm = {...},
 	}
-	print("createCo bbb222")
-	if #cpool > 0 then 
-		print("---cocreate---0000000")
+	if #cpool > 0 then
 		local co = cpool[#cpool]
 		table.remove(cpool, #cpool)
 		return co, task
 	elseif #rpool < MAX_RUNING then
-		print("---cocreate---00")
 		local co = cocreate(function(...)
-			print("---cocreate---11", task, task.func)
-			for k,v in pairs(task) do
-				print("task",k,v)
-			end
 			local func = task.func
-			func(...)
+			func(unpack(task.parm))
 			--ret(task, func(...))
 			rpool[task.cid] = nil
 			while true do 
@@ -65,20 +58,16 @@ function createCo(func, ...)
 		end)
 		return co, task
 	else
-		print("---cocreate---555")
 		return nil, task
 	end
 end
 
 function rpcco:excuteC(obj, func, ...)
-	print("excute11")
 	local co, task = createCo(func, ...)
 	if co then
-		print("excute22")
 		rpool[task.cid] = co
 		coresume(co, task)
 	else
-		print("excute33")
 		table.insert(tpool, task)
 	end
 end
