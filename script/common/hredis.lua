@@ -2,16 +2,25 @@ local HRedis = HRedis
 local table  = table
 local trim = trim
 
+local GRedis = nil
+
 module("LHRedis", package.seeall)
 
-function LHRedis:new()
+function getRedis(self)
+	if not GRedis then
+		GRedis = LHRedis:new();
+	end
+	return GRedis
+end
+
+function new(self)
 	local o = o or {}
 	o.redis = HRedis()
 	setmetatable(o, {__index = self})
 	return o
 end
 
-function LHRedis:query(tName, key)
+function query(self, tName, key)
 	local cmd = string.format("hget %s %s", tName, key)
 	local res = self.redis:excute(cmd)
 	res = trim(res)
@@ -19,14 +28,14 @@ function LHRedis:query(tName, key)
 	return tb
 end
 
-function LHRedis:update(tName, key, val)
+function update(self, tName, key, val)
 	local seri = table:serialize(val)
 	local cmd = string.format("hset %s %s %s", tName, tostring(key), seri)
 	local res = self.redis:excute(cmd)
 	return res
 end
 
-function LHRedis:Incr(tName)
+function Incr(self, tName)
 	local seri = table.serialize(incr)
 	local cmd = string.format("incr %s", tName);
 	local res = self.redis:excute(cmd)

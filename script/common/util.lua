@@ -49,3 +49,12 @@ end
 function trim(s) 
     return (string.gsub(s, "^%s*(.-)%s*$", "%1"))
 end
+
+function getSid()
+    return 1
+end
+
+function getTbName(mName)
+    local sid = getSid()
+    return string.format("%d_%s", sid, mName)
+end

@@ -1,5 +1,6 @@
 local table = table
-local redis = LHRedis:new()
+local redis = LHRedis:getRedis()
+local getTbName = getTbName
 
 function login(msg)
 	local name = msg.name
@@ -13,7 +14,7 @@ end
 function oper1(msg)
 	local rid = msg.rid
 	local player = PlayerManager:getPlayer(rid)
-	--do something
+	print(player.bag)
 end
 
 function tick(msg)
@@ -21,7 +22,7 @@ function tick(msg)
 end
 
 function loadFromDb(tName, key)
-	local tb = redis:query(tName, key)
+	local tb = redis:query(tName, key) or {}
 	return tb
 end
 
