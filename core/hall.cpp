@@ -13,11 +13,12 @@ void* Hall::handlerMsg(void *ud){
 	Hall* hall = (Hall*)(ud);
 	while(true){
 		if(!hall->isRuning()) break;
+		//printf("%s\n", "Hall::handlerMsg");
 		Msg* msg = (Msg*)hall->getMsg();
 		if(msg!=NULL) 
 			hall->doMsg(msg);
-		else 
-			sleep(1);
+		else
+			sleep(2);
 		hall->tm_->tick();
 	}
 }
@@ -25,8 +26,7 @@ void* Hall::handlerMsg(void *ud){
 Hall::Hall(){
 	en_ = new ENet();
 	sc_ = new Luas();
-	tm_ = new Timer();
-	tm_->addTick(1, 1, 5, -1);
+	tm_ = Timer::single();
 }
 
 Hall::~Hall(){
@@ -35,25 +35,25 @@ Hall::~Hall(){
 	delete tm_; tm_ = NULL;
 }
 
-void Hall::init(){
+void Hall::init(const char* sName, int sid, int port){
+	sid_ = sid;
+	port_ = port;
+	sName_ = sName;
+
 	sc_->init(this);
 	en_->init(this);
 	tm_->init(this);
-
-	sid_ = Conf::single()->getInt(std::string("hall_sid"));
-	printf("%s\n", "Hall::init");
+	en_->listen(port);
 }
 void Hall::start(){
-	printf("%s\n", "Hall::start111");
+	printf("%s\n", "Hall::start");
 	running_ = true;
 	pthread_t pids[2];
 	pthread_create(&pids[0], NULL, Hall::handlerMsg, (void*)this);
 	pthread_create(&pids[1], NULL, ENet::dispatch, (void*)this);
 
-	printf("%s\n", "Hall::start222");
 	pthread_join(pids[0], NULL);
 	pthread_join(pids[1], NULL);
-	printf("%s\n", "Hall::start333");
 }
 
 void Hall::stop(){
@@ -61,11 +61,11 @@ void Hall::stop(){
 }
 
 void Hall::doMsg(void* m){
+	printf("%s\n", "Hall::doMsg");
 	Msg* msg = (Msg*)(m);
 	int ty = msg->ty;
 	int sz = msg->sz;
 	const char* ms = msg->ms;
-	//printf("Hall::doMsg %s %d %d\n", ms, sz, ty);
 	sc_->call("excute", ms, 10);
 }
 
@@ -85,4 +85,8 @@ void* Hall::getNet(){
 void* Hall::getMsg(){
 	Msg* m = (Msg*)mq_.pop();
 	return (void*)m;
+}
+
+const char* Hall::getSType(){
+	return sName_;
 }

@@ -1,7 +1,7 @@
 sid  1000
-port 8999
-name global
-stype global
-globalAddr 127.0.0.1:8999
-routerAddr 127.0.0.1:8991
+port 7001
+name hall
+stype hall
+globalAddr 127.0.0.1:8001
+routerAddr 127.0.0.1:6001
 spath ../script/

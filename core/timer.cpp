@@ -1,6 +1,11 @@
 #include "timer.h"
 #include "stdio.h"
 
+Timer* Timer::single(){
+	static Timer tm;
+	return &tm;
+}
+
 void Timer::init(App* app){
 	app_ = app;
 }
@@ -10,17 +15,19 @@ void Timer::tick(){
 		return;
 	time_t timep;
 	time(&timep);
-	while(tm_.top()->key >= timep){
+	while(tm_.top()->key <= timep){
 		TFunc* tf = tm_.pop();
 		app_->doTick(tf->id);
 		if(tf->repcnt == -1){
 			tf->key = timep+tf->delay;
 			tm_.push(tf);
 		}
+		if(tm_.size() == 0) break;
 	}
 }
 
-void Timer::addTick(int id, long sec, long delay, int repcnt){
+int Timer::addTick(int id, long sec, long delay, int repcnt){
+	printf("%s\n","Timer::addTick");
 	time_t timep;
 	time(&timep);
 	time_t key = sec+timep;
@@ -30,4 +37,5 @@ void Timer::addTick(int id, long sec, long delay, int repcnt){
 	tf->delay = delay;
 	tf->repcnt = repcnt; 
 	tm_.push(tf);
+	return 0;
 }

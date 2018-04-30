@@ -8,8 +8,9 @@
 
 class Timer{
 public:
+	static Timer* single();
 	void init(App*);
-	void addTick(int id, long sec, long delay, int repcnt);
+	int addTick(int id, long sec, long delay, int repcnt);
 	void tick();
 private:
 	Heap<TFunc> tm_;

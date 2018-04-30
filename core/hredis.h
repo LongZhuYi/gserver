@@ -16,7 +16,6 @@ public:
     static Lunar<HRedis>::RegType methods[];
 private:
     redisContext* context_;
-    //lua_State*    state_;
     char buff_[1024];
 };
 

@@ -6,7 +6,7 @@
 
 class App{
 public:
-	void init();
+	void init(const char*, int, int);
 	void start();
 	void stop();
 	void doMsg(void*);
@@ -15,6 +15,7 @@ public:
 	virtual void* getMsg()=0;
 	virtual void* getNet()=0;
 	virtual void   doTick(long)=0;
+	virtual const char* getSType()=0;
 };
 
 #endif

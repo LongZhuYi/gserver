@@ -13,7 +13,7 @@ function init(self)
 end
 
 function printTT(self, ...)
-	print("--------printTT---------", ...)
+	--print("--------printTT---------", ...)
 end
 
 function tick(self, id)

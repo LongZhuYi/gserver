@@ -1,8 +1,10 @@
 #ifndef LUAS_H
 #define LUAS_H
 
+#include "app.h"
 #include "conf.h"
 #include "script.h"
+#include "timer.h"
 
 extern "C"
 {	
@@ -17,9 +19,11 @@ public:
 	void loadConfig();
 	void luaAddPath(const char *value);
 	void call(const char*, const char*, int rid, ...);
+
+	static int addTick(lua_State* L);
 private:
 	lua_State* state_;
-
+	App* app_;
 };
 
 #endif

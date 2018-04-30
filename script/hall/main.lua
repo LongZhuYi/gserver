@@ -1,5 +1,7 @@
-require "init"
+require 'hall/init'
 
-function init()
-	--init some manager where
+function main()
+	print("---main----")
 end
+
+main()

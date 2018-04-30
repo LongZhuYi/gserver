@@ -23,8 +23,9 @@ public:
 	//void onAccept(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int, void*);
 	void connect(char* ip, int port);
 	App*   app_;
+	std::map<int, void*> ss_;
 private:
 	
 	struct event_base* base_;
-	std::map<int, void*> ss_;
+	
 };

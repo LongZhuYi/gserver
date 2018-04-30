@@ -48,6 +48,7 @@ public:
 			sscanf(buff, "%s %s", key, val);
 			conf_.insert(pair<string, string>(key, val));
 		}
+		fclose(fd);
 	}
 private:
 	map<string, string> conf_;

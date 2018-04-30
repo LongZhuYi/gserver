@@ -13,7 +13,7 @@ class Hall : public App{
 public:
 	Hall();
 	~Hall();
-	void init();
+	void init(const char*, int, int);
 	void start();
 	void stop();
 	void doMsg(void*);
@@ -23,8 +23,11 @@ public:
 	void* getMsg();
 	void   doTick(long id);
 	static void* handlerMsg(void*);
+	const char* getSType();
 	MQ     mq_;
 private:
+	const char* sName_;
+	int port_;
 	int    sid_;
 	Timer* tm_;
 	Net*   en_;

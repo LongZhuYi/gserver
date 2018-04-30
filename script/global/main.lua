@@ -1,6 +1,9 @@
 require "global/init"
 
 function main()
-	ServerManager.init()
-	ServerManager.run()
+	ServerManager:init()
+	Timer:init()
+	print("----main---")
 end
+
+main()

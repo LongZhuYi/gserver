@@ -15,5 +15,7 @@ function excute(msg)
 end
 
 function tick(msg)
-	print("tick", msg)
+	local id = msg.id
+	Timer:tick(id)
+	--print("lua tick", id)
 end

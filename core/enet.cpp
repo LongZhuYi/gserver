@@ -35,12 +35,14 @@ static void onWrite(struct bufferevent* bev, void* ud){
 static void onAccept(struct evconnlistener *listener, evutil_socket_t fd, struct sockaddr *sa, int d, void *ud)
 {
 	printf("%s\n", "onAccept");
-	void* net = (Net*)(ud); 
+	ENet* net = (ENet*)(ud); 
 	Session* sn = new Session(fd, 0);
 	struct event_base *base = evconnlistener_get_base(listener);
 	struct bufferevent *bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE);
 	bufferevent_setcb(bev, onRead, onWrite, NULL, ud);
 	bufferevent_enable(bev, EV_READ | EV_WRITE);
+
+	net->ss_.insert( std::pair<int, void*>(fd,(void*)(bev)) );
 }
 
 ENet::ENet(){
@@ -54,11 +56,9 @@ ENet::~ENet(){
 
 void ENet::init(void* app){
 	app_ = (App*)app;
-	int port = Conf::single()->getInt(std::string("port"));
-	this->listen(port);
-
-
-/*	char ip[1024];
+	if(app_->getSType() == "global")
+		return;
+	char ip[1024];
 	char port[8];
 	const char* gaddr = Conf::single()->getStr(std::string("globalAddr"));
 	char* tmp = ip;
@@ -72,16 +72,8 @@ void ENet::init(void* app){
 		}else
 			tmp[j++] = gaddr[i];
 	}
-	this->connect(ip, atoi(port));*/
+	this->connect(ip, atoi(port));
 }
-
-/*void ENet::onRead(){
-
-}
-
-void ENet::onWrite(){
-
-}*/
 
 void* ENet::dispatch(void* ud){
 	App* app = (App*)(ud);
