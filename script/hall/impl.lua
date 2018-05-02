@@ -41,6 +41,11 @@ function createAccount(name)
 	return account
 end
 
+function sendMsg(msg)
+	local sid = 20001
+	sendMsgToSid(sid, table.serialize(msg))
+end
+
 local Funcs = {
 	login = login,
 	oper1 = oper1,
@@ -60,6 +65,3 @@ function excute(m)
 	rpcco:excuteC(obj, func, msg)
 end
 
---[[
-	{["rid"]=100,["fName"]="login",["name"]="Long"}
-]]
