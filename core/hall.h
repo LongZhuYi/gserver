@@ -22,7 +22,9 @@ public:
 	void* getNet();
 	void* getMsg();
 	void   doTick(long id);
+	//void   sendMsgToSid(void*);
 	static void* handlerMsg(void*);
+
 	const char* getSType();
 	MQ     mq_;
 private:

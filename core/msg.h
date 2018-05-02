@@ -16,6 +16,7 @@ struct TFunc{
 struct Msg{
 	int ty;
 	int sz;
+	int fd;
 	char* ms;
 };
 

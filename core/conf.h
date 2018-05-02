@@ -50,6 +50,42 @@ public:
 		}
 		fclose(fd);
 	}
+
+	std::string getIp(const char* key){
+		char ip[1024];
+		char port[8];
+		const char* gaddr = getStr(key);
+		char* tmp = ip;
+		int j=0;
+		int len = strlen(gaddr);
+		for(int i=0;i<len;i++){
+			if(gaddr[i] == ':'){
+				tmp[j] = '\0';
+				tmp = port;
+				j = 0;
+			}else
+				tmp[j++] = gaddr[i];
+		}
+		return std::string(ip);
+	}
+
+	std::string getPort(const char* key){
+		char ip[1024];
+		char port[8];
+		const char* gaddr = getStr(key);
+		char* tmp = ip;
+		int j=0;
+		int len = strlen(gaddr);
+		for(int i=0;i<len;i++){
+			if(gaddr[i] == ':'){
+				tmp[j] = '\0';
+				tmp = port;
+				j = 0;
+			}else
+				tmp[j++] = gaddr[i];
+		}
+		return std::string(port);
+	}
 private:
 	map<string, string> conf_;
 };

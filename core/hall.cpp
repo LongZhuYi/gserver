@@ -64,9 +64,13 @@ void Hall::doMsg(void* m){
 	printf("%s\n", "Hall::doMsg");
 	Msg* msg = (Msg*)(m);
 	int ty = msg->ty;
-	int sz = msg->sz;
-	const char* ms = msg->ms;
-	sc_->call("excute", ms, 0);
+	if(ty == 0){
+		int sz = msg->sz;
+		const char* ms = msg->ms;
+		sc_->call("excute", ms, 0);
+	}else if(ty == 1){
+		en_->sendMsg(msg);
+	}
 }
 
 bool Hall::isRuning(){

@@ -4,4 +4,6 @@ name hall
 stype hall
 globalAddr 127.0.0.1:8001
 routerAddr 127.0.0.1:6001
+globalSid  10001
+routerSid  20001
 spath ../script/

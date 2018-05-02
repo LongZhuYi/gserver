@@ -16,6 +16,7 @@ public:
 	virtual void* getNet()=0;
 	virtual void   doTick(long)=0;
 	virtual const char* getSType()=0;
+	//virtual void sendMsgToSid(void*)=0;
 };
 
 #endif

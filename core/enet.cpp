@@ -10,38 +10,52 @@
 #include <arpa/inet.h>
 
 #define MAX_BUFF 1024
+static char gbuff[MAX_BUFF];
 
 static void onRead(struct bufferevent* bev, void *ud)
 {
-	char buff[MAX_BUFF];
-	int sz = bufferevent_read(bev, buff, MAX_BUFF);
-	Msg* msg = (Msg*) Mem::Alloc(sizeof(Msg));
-	msg->ms  = (char*) Mem::Alloc(sz);
-	buff[sz] = '\0';
-	memcpy(msg->ms, buff, sz+1);
-	msg->sz = sz;
-	msg->ty = 0;
-
-	ENet* net = (ENet*)ud;
-	net->app_->pushMsg((void*)msg);
+	int sz = bufferevent_read(bev, gbuff, MAX_BUFF);
+	gbuff[sz] = '\0';
+	Session* ss = (Session*)ud;
+	ss->Read(gbuff,sz+1);
 }
 
 static void onWrite(struct bufferevent* bev, void* ud){
+	Session* ss = (Session*)ud;
+	if(ss->getBuffSize() == 0)
+		return;
+	int sz = bufferevent_write(bev, ss->getBuff(), ss->getBuffSize());
+	ss->Reset();
+}
 
+static void onError(struct bufferevent *bev, short what, void *ud){
+	int fd = event_get_fd(&bev->ev_read);
+	switch(what){
+		case BEV_EVENT_EOF:
+			printf("-----onError BEV_EVENT_EOF---------%d",fd);
+			return;
+		case BEV_EVENT_ERROR:
+			printf("-----onError BEV_EVENT_ERROR---------%d",fd);
+			return;
+		case BEV_EVENT_TIMEOUT:
+			printf("-----onError BEV_EVENT_TIMEOUT---------%d",fd);
+			return;
+	}
 }
 
 
 static void onAccept(struct evconnlistener *listener, evutil_socket_t fd, struct sockaddr *sa, int d, void *ud)
 {
-	printf("%s\n", "onAccept");
+	printf("%s fd=%d\n", "onAccept", fd);
 	ENet* net = (ENet*)(ud); 
-	Session* sn = new Session(fd, 0);
+	Session* ss = new Session(fd, 0);
+	ss.init(net->app_);
 	struct event_base *base = evconnlistener_get_base(listener);
 	struct bufferevent *bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE);
-	bufferevent_setcb(bev, onRead, onWrite, NULL, ud);
+	bufferevent_setcb(bev, onRead, onWrite, onError, ss);
 	bufferevent_enable(bev, EV_READ | EV_WRITE);
 
-	net->ss_.insert( std::pair<int, void*>(fd,(void*)(bev)) );
+	net->ss_.insert( std::pair<int, void*>(fd,(void*)(ss)) );
 }
 
 ENet::ENet(){
@@ -55,23 +69,18 @@ ENet::~ENet(){
 
 void ENet::init(void* app){
 	app_ = (App*)app;
-	if(app_->getSType() == "global")
-		return;
-	char ip[1024];
-	char port[8];
-	const char* gaddr = Conf::single()->getStr(std::string("globalAddr"));
-	char* tmp = ip;
-	int j=0;
-	int len = strlen(gaddr);
-	for(int i=0;i<len;i++){
-		if(gaddr[i] == ':'){
-			tmp[j] = '\0';
-			tmp = port;
-			j = 0;
-		}else
-			tmp[j++] = gaddr[i];
+	
+	if(app_->getSType() != "global"){	
+		std::string ip = Conf::single()->getIp(std::string("globalAddr"));
+		std::string port = Conf::single()->getPort(std::string("globalAddr"));
+		this->connect(ip.c_str(), atoi(port.c_str()));
 	}
-	this->connect(ip, atoi(port));
+
+	if(app_->getSType() !="router"){
+		std::string ip = Conf::single()->getIp(std::string("routerAddr"));
+		std::string port = Conf::single()->getPort(std::string("routerAddr"));
+		this->connect(ip.c_str(), atoi(port.c_str()));
+	}
 }
 
 void* ENet::dispatch(void* ud){
@@ -122,4 +131,11 @@ void ENet::connect(char* ip, int port){
 	bufferevent_setcb(bev, onRead, NULL, NULL, NULL);
 	int result = bufferevent_socket_connect(bev,(struct sockaddr *)&sin, sizeof(sin));
 	printf("ENet::connect result %s %d %d\n",ip, port, result);
+}
+
+void ENet::sendMsg(void* m){
+	Msg* msg = (Msg*)(m);
+	int fd = msg->fd;
+	Session* ss = (Session*)ss_.find(fd)->second;
+	ss->sendMsg(msg->ms);
 }

@@ -9,6 +9,7 @@ public:
 	virtual void listen(int port)=0;
 /*	virtual void onRead()=0;
 	virtual void onWrite()=0;*/
+	virtual void sendMsg(void*)=0;
 	virtual void* getState()=0;
 	virtual void pushSS(Session*)=0;
 	virtual void connect(char*, int)=0;

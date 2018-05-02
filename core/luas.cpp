@@ -89,6 +89,13 @@ int Luas::addTick(lua_State* L){
 	return 0;
 }
 
+int Luas::sendMsgToSid(lua_State* L){
+	int sid = luaL_checknumber(L, 1);
+	const char* msg = luaL_checkstring(L, 2);
+	
+	return 0;
+}
+
 int pcall_callback_err_fun(lua_State* L)  
 {  
     lua_Debug debug= {};  

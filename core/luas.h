@@ -21,6 +21,7 @@ public:
 	void call(const char*, const char*, int rid, ...);
 
 	static int addTick(lua_State* L);
+	static int sendMsgToSid(lua_State* L);
 private:
 	lua_State* state_;
 	App* app_;

@@ -1,23 +1,21 @@
---module("Observer", package.seeall)
+module("Observer", package.seeall)
 
-Observer =  Observer or {}
-
-function Observer:new()
+function new(self)
 	local o = {__list={}}
 	setmetatable(o, {__index=self})
 	return o
 end
 
-function Observer:add(eventId, func)
+function add(self, eventId, func)
 	self.__list[eventId] = self.__list[eventId] or {}
 	table.insert( self.__list[eventId], func )
 end
 
-function Observer:del(eventId, func)
+function Observer:del(self, eventId, func)
 	--todo
 end
 
-function Observer:dispatch(eventId, ...)
+function Observer:dispatch(self, eventId, ...)
 	local list = self.__list[eventId]
 	if not list then 
 		return 
