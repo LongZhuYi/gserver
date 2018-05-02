@@ -9,8 +9,8 @@ int main(int argc, char** argv)
 	const char* sName = argv[1];
 	int sid = atoi(argv[2]);
 	int port = atoi(argv[3]);
-	Hall hall;
-	hall.init(sName, sid, port);
-	hall.start();
+	Hall* hall = Hall::single();
+	hall->init(sName, sid, port);
+	hall->start();
 	return 0;
 }

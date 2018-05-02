@@ -13,6 +13,7 @@ class Hall : public App{
 public:
 	Hall();
 	~Hall();
+	static Hall* single();
 	void init(const char*, int, int);
 	void start();
 	void stop();

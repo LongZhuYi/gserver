@@ -5,6 +5,11 @@
 #include <pthread.h>
 #include <unistd.h>
 
+Hall* Hall::single(){
+	static Hall hall;
+	return &hall;
+}
+
 void Hall::doTick(long id){
 	sc_->call("tick", "", id);
 }

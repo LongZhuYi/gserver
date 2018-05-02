@@ -90,9 +90,16 @@ int Luas::addTick(lua_State* L){
 }
 
 int Luas::sendMsgToSid(lua_State* L){
+	Hall* hall = Hall::single();
 	int sid = luaL_checknumber(L, 1);
-	const char* msg = luaL_checkstring(L, 2);
-	
+	const char* ms = luaL_checkstring(L, 2);
+	Msg* msg = (Msg*) Mem::Alloc(sizeof(Msg));
+	msg->ms  = (char*) Mem::Alloc(sz);
+	msg->sz = sz;
+	msg->ty = 0;
+	msg->fd = fd_;
+	memcpy(msg->ms, ms, strlen(ms));
+	hall->pushMsg((void*)msg);
 	return 0;
 }
 

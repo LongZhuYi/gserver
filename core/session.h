@@ -37,12 +37,13 @@ void Session::init(App* app){
 }
 
 void Session::Read(const char* buff, int sz){
-	memcpy(rbuff_+rpos_, buff, sz);
+	//memcpy(rbuff_+rpos_, buff, sz);
 	Msg* msg = (Msg*) Mem::Alloc(sizeof(Msg));
 	msg->ms  = (char*) Mem::Alloc(sz);
 	msg->sz = sz;
 	msg->ty = 0;
 	msg->fd = fd_;
+	memcpy(msg->ms, buff, sz);
 	app_->pushMsg((void*)msg);
 }
 
