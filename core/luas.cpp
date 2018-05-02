@@ -98,7 +98,7 @@ int Luas::sendMsgToSid(lua_State* L){
 	Msg* msg = (Msg*) Mem::Alloc(sizeof(Msg));
 	msg->ms  = (char*) Mem::Alloc(sz);
 	msg->sz = sz;
-	msg->ty = 0;
+	msg->ty = 1;
 	msg->fd = fd;
 	memcpy(msg->ms, ms, strlen(ms));
 	hall->pushMsg((void*)msg);
