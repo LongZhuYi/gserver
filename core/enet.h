@@ -21,7 +21,7 @@ public:
 	void* getState();
 	void pushSS(Session*);
 	//void onAccept(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int, void*);
-	void connect(char* ip, int port);
+	void connect(const char* ip, int port);
 	void sendMsg(void*);
 	App*   app_;
 	std::map<int, void*> ss_;

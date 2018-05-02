@@ -69,7 +69,7 @@ public:
 		return std::string(ip);
 	}
 
-	std::string getPort(const char* key){
+	int getPort(const char* key){
 		char ip[1024];
 		char port[8];
 		const char* gaddr = getStr(key);
@@ -84,7 +84,7 @@ public:
 			}else
 				tmp[j++] = gaddr[i];
 		}
-		return std::string(port);
+		return atoi(port);
 	}
 private:
 	map<string, string> conf_;

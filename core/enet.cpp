@@ -28,17 +28,17 @@ static void onWrite(struct bufferevent* bev, void* ud){
 	ss->Reset();
 }
 
-static void onError(struct bufferevent *bev, short what, void *ud){
-	int fd = event_get_fd(&bev->ev_read);
+static void onError(struct bufferevent* bev, short what, void *ud){
+	//int fd = event_get_fd(&bev->ev_read);
 	switch(what){
 		case BEV_EVENT_EOF:
-			printf("-----onError BEV_EVENT_EOF---------%d",fd);
+			printf("-----onError BEV_EVENT_EOF---------");
 			return;
 		case BEV_EVENT_ERROR:
-			printf("-----onError BEV_EVENT_ERROR---------%d",fd);
+			printf("-----onError BEV_EVENT_ERROR---------");
 			return;
 		case BEV_EVENT_TIMEOUT:
-			printf("-----onError BEV_EVENT_TIMEOUT---------%d",fd);
+			printf("-----onError BEV_EVENT_TIMEOUT---------");
 			return;
 	}
 }
@@ -49,7 +49,7 @@ static void onAccept(struct evconnlistener *listener, evutil_socket_t fd, struct
 	printf("%s fd=%d\n", "onAccept", fd);
 	ENet* net = (ENet*)(ud); 
 	Session* ss = new Session(fd, 0);
-	ss.init(net->app_);
+	ss->init(net->app_);
 	struct event_base *base = evconnlistener_get_base(listener);
 	struct bufferevent *bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE);
 	bufferevent_setcb(bev, onRead, onWrite, onError, ss);
@@ -71,15 +71,15 @@ void ENet::init(void* app){
 	app_ = (App*)app;
 	
 	if(app_->getSType() != "global"){	
-		std::string ip = Conf::single()->getIp(std::string("globalAddr"));
-		std::string port = Conf::single()->getPort(std::string("globalAddr"));
-		this->connect(ip.c_str(), atoi(port.c_str()));
+		std::string ip = Conf::single()->getIp(std::string("globalAddr").c_str());
+		int port = Conf::single()->getPort(std::string("globalAddr").c_str());
+		this->connect(ip.c_str(), port);
 	}
 
 	if(app_->getSType() !="router"){
-		std::string ip = Conf::single()->getIp(std::string("routerAddr"));
-		std::string port = Conf::single()->getPort(std::string("routerAddr"));
-		this->connect(ip.c_str(), atoi(port.c_str()));
+		std::string ip = Conf::single()->getIp(std::string("routerAddr").c_str());
+		int port = Conf::single()->getPort(std::string("routerAddr").c_str());
+		this->connect(ip.c_str(), port);
 	}
 }
 
@@ -119,7 +119,7 @@ void ENet::pushSS(Session* ss){
 
 }
 
-void ENet::connect(char* ip, int port){
+void ENet::connect(const char* ip, int port){
 	//printf("ENet::connect %s %d\n", ip, port);
 	struct bufferevent *bev = bufferevent_socket_new(base_, -1, BEV_OPT_CLOSE_ON_FREE);
 	struct sockaddr_in sin;
@@ -137,5 +137,6 @@ void ENet::sendMsg(void* m){
 	Msg* msg = (Msg*)(m);
 	int fd = msg->fd;
 	Session* ss = (Session*)ss_.find(fd)->second;
-	ss->sendMsg(msg->ms);
+	int sz = strlen(msg->ms);
+	ss->Write(msg->ms, sz);
 }

@@ -5,6 +5,8 @@
 #include "conf.h"
 #include "script.h"
 #include "timer.h"
+#include "mem.h"
+#include "hall.h"
 
 extern "C"
 {	
@@ -25,6 +27,7 @@ public:
 private:
 	lua_State* state_;
 	App* app_;
+	int fd_;
 };
 
 #endif

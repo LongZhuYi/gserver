@@ -93,11 +93,13 @@ int Luas::sendMsgToSid(lua_State* L){
 	Hall* hall = Hall::single();
 	int sid = luaL_checknumber(L, 1);
 	const char* ms = luaL_checkstring(L, 2);
+	int sz = strlen(ms);
+	int fd = sid;
 	Msg* msg = (Msg*) Mem::Alloc(sizeof(Msg));
 	msg->ms  = (char*) Mem::Alloc(sz);
 	msg->sz = sz;
 	msg->ty = 0;
-	msg->fd = fd_;
+	msg->fd = fd;
 	memcpy(msg->ms, ms, strlen(ms));
 	hall->pushMsg((void*)msg);
 	return 0;
