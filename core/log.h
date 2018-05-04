@@ -16,8 +16,6 @@ void logHandler(int, char*, ...);
 #define WARRING(fa, args...) logHandler(W, fa, ##args)
 #define ERROR(fa, args...) logHandler(E, fa, ##args)
 
-
-
 void logHandler(int level, const char* format, ...){
 	char buffer[MAX_LINE];
 	va_list args;
