@@ -1,6 +1,6 @@
 --module("impl", package.seeall)
 local trim = trim
-local redis  = LHRedis()
+local redis  = LHRedis:new()
 
 local Funcs = {
 	[Event.ServerUp] = ServerManager.onServerUp,

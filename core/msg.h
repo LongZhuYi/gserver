@@ -32,14 +32,14 @@ public:
 	}
 
 	void push(void* msg){
-		Mutex(lock_);
+		Mutex mutex(&lock_);
 		mq_.push((Msg*)msg);
 	}
 
 	void* pop(){
 		int sz = 0;
 		void* msg = NULL;
-		Mutex(lock_);
+		Mutex mutex(&lock_);
 		sz = mq_.size();
 		if(sz > 0){
 			msg = mq_.front();

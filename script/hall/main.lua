@@ -1,7 +1,7 @@
 require 'hall/init'
 
 function main()
-	print("---main----")
+	print("---main hall----")
 end
 
 main()

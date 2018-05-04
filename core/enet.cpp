@@ -69,14 +69,14 @@ ENet::~ENet(){
 
 void ENet::init(void* app){
 	app_ = (App*)app;
-	
-	if(app_->getSType() != "global"){	
+	printf("Enet::init %s\n", app_->getSType() );
+	if(  strcmp(app_->getSType() ,"global") !=0 ) {	
 		std::string ip = Conf::single()->getIp(std::string("globalAddr").c_str());
 		int port = Conf::single()->getPort(std::string("globalAddr").c_str());
 		this->connect(ip.c_str(), port);
 	}
 
-	if(app_->getSType() !="router"){
+	if( strcmp(app_->getSType() ,"router") != 0 ){
 		std::string ip = Conf::single()->getIp(std::string("routerAddr").c_str());
 		int port = Conf::single()->getPort(std::string("routerAddr").c_str());
 		this->connect(ip.c_str(), port);

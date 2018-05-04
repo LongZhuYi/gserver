@@ -6,6 +6,7 @@ local __Class__ = __Class__ or {}
 module("GClass", package.seeall)
 
 function Register(self, name, class)
+	assert(not __Class__[name], string.format("mutil Register class name=%s", name))
 	__Class__[name] = class
 end
 
