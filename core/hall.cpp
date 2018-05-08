@@ -69,11 +69,18 @@ void Hall::doMsg(void* m){
 	printf("%s\n", "Hall::doMsg");
 	Msg* msg = (Msg*)(m);
 	int ty = msg->ty;
-	if(ty == 0){
+	const char* ms = msg->ms;
+	int tid = msg->tid;
+/*	if(ty == 0){
 		int sz = msg->sz;
 		const char* ms = msg->ms;
 		sc_->call("excute", ms, 0);
 	}else if(ty == 1){
+		en_->sendMsg(msg);
+	}*/
+	if(tid == sid_){
+		sc_->call("excute", ms, 0);
+	}else{
 		en_->sendMsg(msg);
 	}
 }

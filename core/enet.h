@@ -22,7 +22,7 @@ public:
 	void pushSS(Session*);
 	//void onAccept(struct evconnlistener*, evutil_socket_t, struct sockaddr*, int, void*);
 	void connect(const char* ip, int port);
-	void sendMsg(void*);
+	void sendMsg(void*, int sid);
 	App*   app_;
 	std::map<int, void*> ss_;
 private:

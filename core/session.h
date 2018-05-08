@@ -6,7 +6,8 @@
 #include "msg.h"
 
 
-#define MAX_SS_BUFF 1024
+#define MAX_SS_BUFF 1024*4
+const int INT_SIZE = sizeof(int);
 
 class Session{
 public:
@@ -15,10 +16,12 @@ public:
 	}
 	void init(App* app);
 	void Read(const char*, int);
-	void Write(const char*, int);
+	void Write(void*);
 	void Reset(){ wpos_ = 0; }
 	const char* getBuff();
 	int getBuffSize();
+	int readInt(int);
+	const char* writeMsg(void*, int&);
 	int rid_;
 	int fd_;
 	App*   app_;
@@ -27,6 +30,7 @@ private:
 	char rbuff_[MAX_SS_BUFF];
 	char wbuff_[MAX_SS_BUFF];
 	int  rpos_;
+	int  lpos_;
 };
 
 

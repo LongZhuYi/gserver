@@ -133,10 +133,7 @@ void ENet::connect(const char* ip, int port){
 	printf("ENet::connect result %s %d %d\n",ip, port, result);
 }
 
-void ENet::sendMsg(void* m){
-	Msg* msg = (Msg*)(m);
-	int fd = msg->fd;
-	Session* ss = (Session*)ss_.find(fd)->second;
-	int sz = strlen(msg->ms);
-	ss->Write(msg->ms, sz);
+void ENet::sendMsg(void* m, int sid){
+	Session* ss = (Session*)ss_.find(sid)->second;
+	ss->Write(m);
 }
